@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Add Mess Member";
+}
+
+
+<div class="page-breadcrumb bg-white">
+    <div class="row align-items-center">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Add Daily Messing</h4>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container-fluid" id="dailymessing-add">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <form class="form-horizontal form-material" method="POST" id="member-form" data-bind="submit: AddDailyMessing">
+                        <!-- ko with: SelDailyMessing-->
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Date</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="date" name="date" class="form-control p-0 border-0" data-bind="value: date">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Meal</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <select data-bind='options: $root.MealOptions, optionsCaption: "Select Meal", optionsText: "key", optionsValue : "value", value: mealType' class="form-select shadow-none p-0 border-0 form-control-line" name="mealType">
+                                </select>
+                            </div>
+                        </div>
+                        <div style="margin: 10px 0;">
+                            <!-- ko foreach: dailyMessingItems-->
+                            <div class="form-group mb-4">
+                                <label class="col-md-12 p-0">Item Name</label>
+                                <div class="col-md-12 border-bottom p-0">
+                                    <select data-bind='options: $root.InventoryItemTypes, optionsCaption: "Select Item", optionsText: "name", optionsValue : "itemTypeId", value: itemType' class="form-select shadow-none p-0 border-0 form-control-line" name="type">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label class="col-md-12 p-0">Qty</label>
+                                <div class="col-md-12 border-bottom p-0">
+                                    <input type="text" data-bind="textInput: quantity" name="quantity" class="form-control p-0 border-0">
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <button class="btn btn-secondary mb-5" data-bind="click: $root.AddMoreItemClicked">Add More Item</button>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                        
+                        <!-- /ko -->
+                        <div class="form-group mb-4">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-success">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <environment names="Development">
+        <script src="~/js/viewmodels/dailyMessingViewModel.js" asp-append-version="true"></script>
+        <script src="~/js/models/dailyMessingItem.js" asp-append-version="true"></script>
+        <script src="~/js/models/dailyMessing.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/viewmodels/dailyMessingViewModel.js" asp-append-version="true"></script>
+        <script src="~/js/models/dailyMessingItem.js" asp-append-version="true"></script>
+        <script src="~/js/models/dailyMessing.js" asp-append-version="true"></script>
+    </environment>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var viewmodel = new DailyMessingViewModel();
+            ko.applyBindings(viewmodel, document.getElementById('dailymessing-add'));
+            viewmodel.GetInventoryItemTypes();
+        });
+    </script>
+}

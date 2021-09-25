@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Bazar and Entry";
+}
+
+
+<div class="page-breadcrumb bg-white">
+    <div class="row align-items-center">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Add Inventory Item</h4>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container-fluid" id="inventory-item-add">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <form class="form-horizontal form-material" method="POST" id="inventory-type-form" data-bind="submit: AddInventoryItemType">
+                        <!-- ko with: SelInventoryItemType-->
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Item Name</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" name="name" class="form-control p-0 border-0" data-bind="value: name">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Unit</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" name="unit" class="form-control p-0 border-0" data-bind="value: unit">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Per Unit Price</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" name="unitPrice" class="form-control p-0 border-0" data-bind="value: unitPrice">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Quantity</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" name="quantity" class="form-control p-0 border-0" data-bind="value: quantity">
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <div class="form-group mb-4">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-success">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <environment names="Development">
+        <script src="~/js/viewmodels/inventoryviewmodel.js" asp-append-version="true"></script>
+        <script src="~/js/models/inventoryItemType.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/viewmodels/inventoryviewmodel.js" asp-append-version="true"></script>
+        <script src="~/js/models/inventoryItemType.js" asp-append-version="true"></script>
+    </environment>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var inventoryVM = new InventoryViewModel();
+            ko.applyBindings(inventoryVM, document.getElementById('inventory-item-add'));
+        });
+    </script>
+}}

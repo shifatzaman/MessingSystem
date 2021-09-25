@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Add Mess Member";
+}
+
+
+<div class="page-breadcrumb bg-white">
+    <div class="row align-items-center">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Add Mess Member</h4>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container-fluid" id="member-add">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <form class="form-horizontal form-material" method="POST" id="member-form" data-bind="submit: AddMessMember">
+                        <!-- ko with: SelMessMember-->
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Name</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" data-bind="textInput: name" name="name" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Bnumb</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" data-bind="textInput: bnumb" name="bnumb" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Rank</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" data-bind="textInput: rank" name="rank" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Appt</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" data-bind="textInput: appt" name="appt" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Unit</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" data-bind="textInput: unit" name="unit" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">ContactNo</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" data-bind="textInput: contactNo" name="contactNo" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">RoomNo</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" data-bind="textInput: roomNo" name="roomNo" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Maritial Status</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" data-bind="textInput: maritialStatus" name="maritialStatus" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Member Status</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <select data-bind='options: $root.MemberStatusOptions, optionsCaption: "Select Member Status", optionsText: "key", optionsValue : "value", value: memberStatus' class="form-select shadow-none p-0 border-0 form-control-line" name="memberStatus">
+                                </select>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <div class="form-group mb-4">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-success">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <environment names="Development">
+        <script src="~/js/viewmodels/messMemberViewModel.js" asp-append-version="true"></script>
+        <script src="~/js/models/messMember.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/viewmodels/messMemberViewModel.js" asp-append-version="true"></script>
+        <script src="~/js/models/messMember.js" asp-append-version="true"></script>
+    </environment>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var messMemberVM = new MessMemberViewModel();
+            ko.applyBindings(messMemberVM, document.getElementById('member-add'));
+        });
+    </script>
+}

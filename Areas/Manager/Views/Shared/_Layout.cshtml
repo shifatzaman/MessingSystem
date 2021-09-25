@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MessingSystem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/login.css" />
+    <link rel="stylesheet" href="~/css/style.min.css">
+</head>
+<body class="my-login-page">
+    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+         data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+
+        <header class="topbar" data-navbarbg="skin5">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header" data-logobg="skin6">
+                    <a class="navbar-brand">
+                        <!--End Logo icon -->
+                        <!-- Logo text -->
+                        <span class="logo-text">
+                            <!-- dark Logo text -->
+                            Messing System
+                        </span>
+                    </a>
+                    <a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
+                       href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+
+                    <ul class="navbar-nav ms-auto d-flex align-items-center">
+                        <li class=" in">
+                        </li>
+                        <li>
+                            <a class="profile-pic" onclick="logout()">
+                                <span class="text-white font-medium">Logout</span>
+                                <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="left-sidebar" data-sidebarbg="skin6">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <!-- User Profile-->
+                        <li class="sidebar-item pt-2">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                               aria-expanded="false">
+                                <i class="far fa-clock" aria-hidden="true"></i>
+                                <span class="hide-menu">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                               aria-expanded="false" href="/Manager/Bazar">
+                                <i class="fa fa-table" aria-hidden="true"></i>
+                                <span class="hide-menu">Bazar and Entry</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                               aria-expanded="false" href="/Manager/DailyMessing">
+                                <i class="fa fa-flag-checkered" aria-hidden="true"></i>
+                                <span class="hide-menu">Daily Messings</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                               aria-expanded="false" href="/Manager/MessMember">
+                                <i class="fa fa-list" aria-hidden="true"></i>
+                                <span class="hide-menu">Members</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                               aria-expanded="false" href="/Manager/MessMember/Meals">
+                                <i class="fa fa-user-times" aria-hidden="true"></i>
+                                <span class="hide-menu">Meal in/outs</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <div class="page-wrapper">
+            @RenderBody()
+        </div>
+        <div class="d-flex justify-content-center" >
+            <div class="spinner-border custom-spinner" role="status" id="loaderSpinner" style="display:none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Message</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="noti-modal-text">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" style="color: #fff !important;" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - MessingSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
+    <script src="~/js/knockout-mapping.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/moment/moment.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/auth.js" asp-append-version="true"></script>
+    <script src="~/js/api.js" asp-append-version="true"></script>
+    <script src="~/js/models/inventoryItem.js" asp-append-version="true"></script>
+    <script src="~/js/viewmodels/inventoryviewmodel.js" asp-append-version="true"></script>
+    <script src="~/js/models/inventoryItemType.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+    <script>
+        loggedInUserGuard();
+    </script>
+</body>
+</html>
+
+

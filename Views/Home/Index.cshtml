@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+@Html.Partial("LoginFormPartial");
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <environment names="Development">
+        <script src="~/js/viewmodels/loginviewmodel.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/viewmodels/loginviewmodel.js" asp-append-version="true"></script>
+    </environment>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            nonloggedInUserGuard();
+            var loginViewModel = new LoginViewModel();
+            ko.applyBindings(loginViewModel, document.getElementById('login-form'));
+        });
+    </script>
+}
