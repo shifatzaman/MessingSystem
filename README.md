@@ -21,3 +21,7 @@ A web app to manage inventory and messing
 4. Run ef core migrations (in terminal -> dotnet ef database update)
 5. Run the project
 6. Login using admin@ms.com
+
+
+## Note
+1. dotnet ef is not included with .NET SDK anymore. Run dotnet tool install --global dotnet-ef in CLI to install the tool globally before running ef related commands.
