@@ -4,8 +4,9 @@ A web app to manage inventory and messing
 
 ## Used Technologies
 1. ASP.NET 5
-2. KnockoutJs
-3. MSSQL Server
+2. Entity Framework Core 5
+3. KnockoutJs
+4. MSSQL Server
 
 
 ## Requirements
