@@ -26,3 +26,9 @@ A web app to manage inventory and messing
 
 ## Note
 1. dotnet ef is not included with .NET SDK anymore. Run dotnet tool install --global dotnet-ef in CLI to install the tool globally before running ef related commands.
+
+
+ChangeLog 06/10
+1. Added edit and delete option in inventory
+2. Added option to set unit price while adding bazar entry (unit price of inventory will be updated based on average value)
+3. Added delete option for bazar. Deleting bazar item will remove that item's quantity from inventory.
