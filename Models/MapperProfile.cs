@@ -20,6 +20,18 @@ namespace MessingSystem.Models
             CreateMap<MessMember, MessMemberViewModel>()
                    .ReverseMap();
 
+            CreateMap<ExtraMessing, AddExtraMessingViewModel>()
+                   .ReverseMap();
+
+            CreateMap<CafeterialBill, AddCafeteriaBillViewModel>()
+                   .ReverseMap();
+
+            CreateMap<UtilityBill, AddUtilityBillViewModel>()
+                   .ReverseMap();
+
+            CreateMap<Room, RoomViewModel>()
+                   .ReverseMap();
+
             //CreateMap<MemberMeal, Membermeal>()
             //       .ReverseMap();
         }

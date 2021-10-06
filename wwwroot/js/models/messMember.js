@@ -14,5 +14,8 @@
         self.maritialStatus = ko.observable();
         self.memberStatus = ko.observable();
         self.dateOfEntry = ko.observable();
+        self.email = ko.observable();
+        self.password = ko.observable();
+        self.userId = ko.observable(0);
     }
 }

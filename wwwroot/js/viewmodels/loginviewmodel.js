@@ -20,7 +20,8 @@
 
         if (response && response.success && response.data) {
             storeTokenData(response.data);
-            redirect(getBaseUrl() + '/Manager/Bazar/Index');
+            if (response.data.redirectUrl)
+                redirect(getBaseUrl() + response.data.redirectUrl);
         }
         else {
             if (response.message) {

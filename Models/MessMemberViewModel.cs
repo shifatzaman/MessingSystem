@@ -32,5 +32,9 @@ namespace MessingSystem.Models
                 return MemberStatus == (int)MessingSystem.Enums.MemberStatus.Dining ? "Dining" : "Non-Dining";
             } 
         }
+
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public int UserId { get; set; }
     }
 }

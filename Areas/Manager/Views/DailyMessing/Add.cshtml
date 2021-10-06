@@ -15,7 +15,7 @@
 <div class="container-fluid" id="dailymessing-add">
     <div class="row">
         <div class="col-sm-12">
-            <div class="card">
+            <div class="card ms-input">
                 <div class="card-body">
                     <form class="form-horizontal form-material" method="POST" id="member-form" data-bind="submit: AddDailyMessing">
                         <!-- ko with: SelDailyMessing-->
@@ -47,7 +47,7 @@
                                     <input type="text" data-bind="textInput: quantity" name="quantity" class="form-control p-0 border-0">
                                 </div>
                             </div>
-                            <div class="col-sm-12">
+                            <div>
                                 <button class="btn btn-secondary mb-5" data-bind="click: $root.AddMoreItemClicked">Add More Item</button>
                             </div>
                             <!-- /ko -->
@@ -55,7 +55,7 @@
                         
                         <!-- /ko -->
                         <div class="form-group mb-4">
-                            <div class="col-sm-12">
+                            <div>
                                 <button type="submit" class="btn btn-success">Save</button>
                             </div>
                         </div>

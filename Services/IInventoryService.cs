@@ -14,10 +14,17 @@ namespace MessingSystem.Services
 
         void DeleteInventoryItem(int inventoryId);
 
+        InventoryItem GetInventoryItem(int inventoryItemId);
+
         IList<InventoryItemType> GetInventoryItemTypes();
 
         void AddInventoryItemType(AddInventoryItemTypeViewModel model);
 
+        public void UpdateInventoryItemType(AddInventoryItemTypeViewModel model);
+
+        void DeleteInventoryItemType(int inventoryItemLTypeId);
+
+        InventoryItemType GetInventoryItemType(int inventoryItemLTypeId);
 
     }
 }

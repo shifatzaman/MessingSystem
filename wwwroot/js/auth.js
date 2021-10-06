@@ -45,7 +45,15 @@ function loggedInUserGuard() {
 function nonloggedInUserGuard() {
     if (getTokenData()) {
         var baseurl = window.location.origin;
-        var redirectUrl = baseurl + '/Manager/Bazar';
-        redirect(redirectUrl);
+        var user = getUserData();
+
+        if (user.memberId > 0) {
+            var redirectUrl = baseurl + '/Member/Dashboard';
+            redirect(redirectUrl);
+        }
+        else {
+            var redirectUrl = baseurl + '/Manager/Dashboard';
+            redirect(redirectUrl);
+        }
     }
 }

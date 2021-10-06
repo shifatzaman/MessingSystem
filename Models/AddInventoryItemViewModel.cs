@@ -11,5 +11,7 @@ namespace MessingSystem.Models
         public DateTime? Date { get; set; }
         public int ItemType { get; set; }
         public decimal Quantity { get; set; }
+
+        public decimal UnitPrice { get; set; }
     }
 }

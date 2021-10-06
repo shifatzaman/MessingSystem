@@ -1,4 +1,5 @@
-﻿using MessingSystem.Models;
+﻿using MessingSystem.Enums;
+using MessingSystem.Models;
 using MessingSystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,18 +48,28 @@ namespace MessingSystem.Controllers.API
                     if (CommonUtilities.VerifyPassword(model.Password, existingUser.PasswordHash, existingUser.PasswordSalt))
                     {
                         var token = CommonUtilities.GenereateJsonWebToken(existingUser);
+                        int memberId = 0;
+                        string redirectUrl = "/Manager/Dashboard";
+
+                        if (existingUser.Role == (int)UserRoles.Member)
+                        {
+                            memberId = _userService.GetMemberId(existingUser.UserId);
+                            redirectUrl = "/Member/Dashboard";
+                        }
 
                         if (!string.IsNullOrEmpty(token))
                         {
                             var data = new
                             {
                                 token = token,
+                                redirectUrl = redirectUrl,
                                 userdata = new
                                 {
                                     firstName = existingUser.FirstName,
                                     lastName = existingUser.LastName,
                                     userId = existingUser.UserId,
-                                    email = existingUser.Email
+                                    email = existingUser.Email,
+                                    memberId = memberId
                                 }
                             };
 

@@ -30,29 +30,92 @@ namespace MessingSystem.Services
             dbContext.SaveChanges();
         }
 
-        public void AddOrUpdateInventoryItem(AddInventoryViewModel model)
+        public void UpdateInventoryItemType(AddInventoryItemTypeViewModel model)
         {
-            var item = new InventoryItem
+            var item = new InventoryItemType
             {
-                Date = model.Date,
-                ItemType = model.ItemType,
+                ItemTypeId = model.ItemTypeId,
+                Name = model.Name,
+                Unit = model.Unit,
+                UnitPrice = model.UnitPrice,
                 Quantity = model.Quantity
             };
 
-            dbContext.InventoryItems.Add(item);
+            dbContext.InventoryItemTypes.Update(item);
             dbContext.SaveChanges();
+        }
 
+        public void AddOrUpdateInventoryItem(AddInventoryViewModel model)
+        {
+            if (model.InventoryId > 0)
+                UpdateInventoryItem(model);
 
-            if (item.ItemType > 0)
+            else
             {
-                var inventoryType = dbContext.InventoryItemTypes.Where(it => it.ItemTypeId == item.ItemType).FirstOrDefault();
-
-                if (inventoryType != null)
+                var item = new InventoryItem
                 {
-                    inventoryType.Quantity += item.Quantity;
-                    dbContext.InventoryItemTypes.Update(inventoryType);
-                    dbContext.SaveChanges();
+                    Date = model.Date,
+                    ItemType = model.ItemType,
+                    Quantity = model.Quantity,
+                    UnitPrice = model.UnitPrice
+                };
+
+                dbContext.InventoryItems.Add(item);
+
+                dbContext.SaveChanges();
+
+
+                if (item.ItemType > 0)
+                {
+                    var inventoryType = dbContext.InventoryItemTypes.Where(it => it.ItemTypeId == item.ItemType).FirstOrDefault();
+
+                    if (inventoryType != null)
+                    {
+
+                        //Avg Calculation
+                        var totalExistingInventoryPrice = inventoryType.Quantity * inventoryType.UnitPrice;
+
+                        var newItemTotalPrice = model.Quantity * model.UnitPrice;
+
+                        if (inventoryType.Quantity > 0)
+                        {
+                            try
+                            {
+                                inventoryType.UnitPrice = ((totalExistingInventoryPrice + newItemTotalPrice) / (inventoryType.Quantity + model.Quantity));
+                            }
+                            catch (Exception ex)
+                            {
+                            }
+                        }
+                        else
+                        {
+                            inventoryType.UnitPrice = model.UnitPrice;
+                        }
+
+                        inventoryType.Quantity += item.Quantity;
+                        dbContext.InventoryItemTypes.Update(inventoryType);
+                        dbContext.SaveChanges();
+                    }
                 }
+            }
+            
+        }
+
+        public void UpdateInventoryItem(AddInventoryViewModel model)
+        {
+
+            var existingItem = dbContext.InventoryItems.Where(it => it.InventoryItemId == model.InventoryId).FirstOrDefault();
+
+            if (existingItem != null)
+            {
+               
+                existingItem.ItemType = model.ItemType;
+                existingItem.Quantity = model.Quantity;
+                existingItem.Date = model.Date;
+                existingItem.UnitPrice = model.UnitPrice;
+
+                dbContext.InventoryItems.Update(existingItem);
+                dbContext.SaveChanges();
             }
         }
 
@@ -62,6 +125,19 @@ namespace MessingSystem.Services
             item.IsDeleted = true;
             dbContext.InventoryItems.Update(item);
             dbContext.SaveChanges();
+
+
+            if (item.ItemType > 0)
+            {
+                var inventoryType = dbContext.InventoryItemTypes.Where(it => it.ItemTypeId == item.ItemType).FirstOrDefault();
+
+                if (inventoryType != null)
+                {
+                    inventoryType.Quantity -= item.Quantity;
+                    dbContext.InventoryItemTypes.Update(inventoryType);
+                    dbContext.SaveChanges();
+                }
+            }
         }
 
         public IList<FetchInventoryItemViewModel> GetInventoryItems()
@@ -77,7 +153,7 @@ namespace MessingSystem.Services
                                Quantity = item.Quantity,
                                ItemName =  type.Name,
                                Unit = type.Unit,
-                               UnitPrice = type.UnitPrice
+                               UnitPrice = item.UnitPrice
                            });
 
             return itemVms.ToList();
@@ -86,6 +162,26 @@ namespace MessingSystem.Services
         public IList<InventoryItemType> GetInventoryItemTypes()
         {
             return dbContext.InventoryItemTypes.ToList();
+        }
+
+        public InventoryItem GetInventoryItem(int inventoryItemId)
+        {
+            return dbContext.InventoryItems.Where(it => it.InventoryItemId == inventoryItemId).FirstOrDefault();
+        }
+
+        public void DeleteInventoryItemType(int inventoryItemLTypeId)
+        {
+            var inventoryItemType = GetInventoryItemType(inventoryItemLTypeId);
+            if (inventoryItemType != null)
+            {
+                dbContext.InventoryItemTypes.Remove(inventoryItemType);
+                dbContext.SaveChanges();
+            }
+        }
+
+        public InventoryItemType GetInventoryItemType(int inventoryItemLTypeId)
+        {
+            return dbContext.InventoryItemTypes.Where(it => it.ItemTypeId == inventoryItemLTypeId).FirstOrDefault();
         }
     }
 }

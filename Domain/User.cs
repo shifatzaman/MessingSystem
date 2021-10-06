@@ -14,5 +14,6 @@ namespace MessingSystem.Domain
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public bool IsDeleted { get; set; }
+        public int Role { get; set; }
     }
 }

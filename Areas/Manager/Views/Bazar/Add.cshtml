@@ -18,7 +18,7 @@
     <!-- ============================================================== -->
     <div class="row">
         <div class="col-sm-12">
-            <div class="card">
+            <div class="card ms-input">
                 <div class="card-body">
                     <form class="form-horizontal form-material" method="POST" id="inventory-form" data-bind="submit: AddInventoryItem">
                         <!-- ko with: SelInventoryItem-->
@@ -45,6 +45,12 @@
                             <label class="col-md-12 p-0">Qty</label>
                             <div class="col-md-12 border-bottom p-0">
                                 <input type="text" data-bind="textInput: quantity" name="quantity" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Unit Price</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" data-bind="textInput: unitPrice" name="unitPrice" class="form-control p-0 border-0">
                             </div>
                         </div>
                         @*<div class="form-group mb-4">
@@ -80,6 +86,8 @@
             var inventoryVM = new InventoryViewModel();
             ko.applyBindings(inventoryVM, document.getElementById('inventory-add'));
             inventoryVM.GetInventoryItemTypes();
+            var inventoryId = getParamValueFromUrl('inventoryId');
+            inventoryVM.SelInventoryId(inventoryId);
         });
     </script>
 }

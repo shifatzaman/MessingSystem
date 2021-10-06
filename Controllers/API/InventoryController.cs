@@ -50,7 +50,7 @@ namespace MessingSystem.Controllers.API
                 if (User != null &&  User.Identity != null)
                 {
                     _inventoryService.AddOrUpdateInventoryItem(model);
-                    response.Message = "Inventory item added successfully";
+                    return response.CreateSuccessRespone(null, "Bazar added successfully.");
                 }
                 else
                 {
@@ -83,7 +83,7 @@ namespace MessingSystem.Controllers.API
                 if (User != null && User.Identity != null)
                 {
                     var items = _inventoryService.GetInventoryItems();
-                    return response.CreateSuccessRespone(items, "Inventory history generated");
+                    return response.CreateSuccessRespone(items, "Inventory history generated.");
                 }
                 else
                 {
@@ -94,6 +94,39 @@ namespace MessingSystem.Controllers.API
             {
                 response.Message = "Error Occured";
                 _logger.LogDebug(string.Format("Error in inventory/history - {0}", ex.Message));
+            }
+
+            return response;
+        }
+
+        [HttpDelete]
+        [Authorize]
+        [Route("delete/{inventoryItemId}")]
+        public ResponseModel DeleteInventoryItem(int inventoryItemId)
+        {
+            var response = new ResponseModel();
+
+            if (!ModelState.IsValid)
+            {
+                response.Message = "Inalid Input Parameter";
+            }
+
+            try
+            {
+                if (User != null && User.Identity != null)
+                {
+                    _inventoryService.DeleteInventoryItem(inventoryItemId);
+                    return response.CreateSuccessRespone(null, "Bazar item deleted");
+                }
+                else
+                {
+                    response.Message = "Access Denied";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Error Occured";
+                _logger.LogDebug(string.Format("Error in inventory/delete - {0}", ex.Message));
             }
 
             return response;
@@ -116,8 +149,17 @@ namespace MessingSystem.Controllers.API
             {
                 if (User != null && User.Identity != null)
                 {
-                    _inventoryService.AddInventoryItemType(model);
-                    response.Message = "Inventory item type added successfully";
+                    if (model.ItemTypeId > 0)
+                    {
+                        _inventoryService.UpdateInventoryItemType(model);
+                        return response.CreateSuccessRespone(null, "Inventory item updated successfully.");
+                    }
+                    else
+                    {
+                        _inventoryService.AddInventoryItemType(model);
+                        return response.CreateSuccessRespone(null, "Inventory item added successfully.");
+                    }
+                    
                 }
                 else
                 {
@@ -128,6 +170,55 @@ namespace MessingSystem.Controllers.API
             {
                 response.Message = "Error Occured";
                 _logger.LogDebug(string.Format("Error in inventory/type/add - {0}", ex.Message));
+            }
+
+            return response;
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("type/{itemTypeId}")]
+        public ResponseModel GetInventoryItemType(int itemTypeId)
+        {
+            var response = new ResponseModel();
+
+            if (!ModelState.IsValid)
+            {
+                response.Message = "Inalid Input Parameter";
+            }
+
+            try
+            {
+                if (User != null && User.Identity != null)
+                {
+                    var userId = Convert.ToInt32(User.Identity.GetId());
+
+                    bool hasAccess = false;
+                    string accessMsg = string.Empty;
+
+                    (hasAccess, accessMsg) = _userService.HasPermission(userId, Constants.IventoryAdd);
+
+                    if (hasAccess)
+                    {
+                        var item = _inventoryService.GetInventoryItemType(itemTypeId);
+                        var itemVM = _mapper.Map<InventoryItemType, FetchInventoryItemTypeViewModel>(item);
+                        return response.CreateSuccessRespone(item, "Inventory item generated");
+                    }
+                    else
+                    {
+                        response.Message = accessMsg;
+                    }
+                    
+                }
+                else
+                {
+                    response.Message = "Access Denied";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Error Occured";
+                _logger.LogDebug(string.Format("Error in inventory/type/{0} - {1}", itemTypeId, ex.Message));
             }
 
             return response;
@@ -149,9 +240,24 @@ namespace MessingSystem.Controllers.API
             {
                 if (User != null && User.Identity != null)
                 {
-                    var items = _inventoryService.GetInventoryItemTypes();
-                    var itemVMs = _mapper.Map<IList<InventoryItemType>, IList<FetchInventoryItemTypeViewModel>>(items);
-                    return response.CreateSuccessRespone(items, "Inventory item types generated");
+
+                    var userId = Convert.ToInt32(User.Identity.GetId());
+
+                    bool hasAccess = false;
+                    string accessMsg = string.Empty;
+
+                    (hasAccess, accessMsg) = _userService.HasPermission(userId, Constants.IventoryAdd);
+
+                    if (hasAccess)
+                    {
+                        var items = _inventoryService.GetInventoryItemTypes();
+                        var itemVMs = _mapper.Map<IList<InventoryItemType>, IList<FetchInventoryItemTypeViewModel>>(items);
+                        return response.CreateSuccessRespone(items, "Inventory items generated");
+                    }
+                    else
+                    {
+                        response.Message = accessMsg;
+                    }
                 }
                 else
                 {
@@ -162,6 +268,54 @@ namespace MessingSystem.Controllers.API
             {
                 response.Message = "Error Occured";
                 _logger.LogDebug(string.Format("Error in inventory/type/list - {0}", ex.Message));
+            }
+
+            return response;
+        }
+
+        [HttpDelete]
+        [Authorize]
+        [Route("type/{itemTypeId}")]
+        public ResponseModel DeleteInventoryItemType(int itemTypeId)
+        {
+            var response = new ResponseModel();
+
+            if (!ModelState.IsValid)
+            {
+                response.Message = "Inalid Input Parameter";
+            }
+
+            try
+            {
+                if (User != null && User.Identity != null)
+                {
+
+                    var userId = Convert.ToInt32(User.Identity.GetId());
+
+                    bool hasAccess = false;
+                    string accessMsg = string.Empty;
+
+                    (hasAccess, accessMsg) = _userService.HasPermission(userId, Constants.IventoryAdd);
+
+                    if (hasAccess)
+                    {
+                        _inventoryService.DeleteInventoryItemType(itemTypeId);
+                        return response.CreateSuccessRespone(string.Empty, "Inventory item deleted");
+                    }
+                    else
+                    {
+                        response.Message = accessMsg;
+                    }
+                }
+                else
+                {
+                    response.Message = "Access Denied";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Error Occured";
+                _logger.LogDebug(string.Format("Error in inventory/type/{0} - {1}", itemTypeId, ex.Message));
             }
 
             return response;

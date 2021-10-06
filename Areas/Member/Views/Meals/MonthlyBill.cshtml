@@ -1,0 +1,161 @@
+﻿@{
+    ViewData["Title"] = "Mess Members";
+}
+
+
+<div class="page-breadcrumb bg-white">
+    <div class="row align-items-center">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Monthly Mess Bill</h4>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container-fluid" id="mess-bill">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row mb-5">
+        <div class="col-md-2">
+            <div class="col-md-12 border-bottom p-0">
+                <input type="date" name="startDate" class="form-control p-0 border-0" data-bind="value: StartDate"> Start Date
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="col-md-12 border-bottom p-0">
+                <input type="date" name="endDate" class="form-control p-0 border-0" data-bind="value: EndDate"> End Date
+            </div>
+        </div>
+        <div class="col-md-4">
+            <button type="button" class="btn btn-success pull-right txt-white" data-bind="click: GenerateBill" style="margin-right: 10px !important">Generate</button>
+            <button type="button" class="btn btn-primary pull-right txt-white" data-bind="visible: BillGenarated, click: PrintBill">Print</button>
+        </div>
+    </div>
+
+    <div id="billing-report" data-bind="if: BillGenarated">
+        <div class="container">
+            <div class="white-box">
+                <div class="row printinfo-container">
+                    <div class="col-sm-6">
+                        <div data-bind="with: SelMessMember">
+                            <label>BA: </label> <span data-bind="text: bnumb"></span><br />
+                            <label>Rank: </label> <span data-bind="text: rank"></span><br />
+                            <label>Name: </label> <span data-bind="text: name"></span><br />
+                            <label>Unit: </label> <span data-bind="text: unit"></span><br />
+                            <label>Contact: </label> <span data-bind="text: contactNo"></span><br />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div data-bind="with: SelMessBill" style="float: right">
+                            <label>Date of Bill Generation: </label> <span data-bind="text: moment(billGenerationDate).format('DD/MM/yyyy')"></span><br />
+                            <label>Bill Period: </label> <span data-bind="text: moment(billPeriodStart).format('DD/MM/yyyy')"></span> - <span data-bind="text: moment(billPeriodEnd).format('DD/MM/yyyy')"></span><br />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div data-bind="with: SelMessBill">
+                            <div class="table-responsive">
+                                <table class="table text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-top-0">Date</th>
+                                            <th class="border-top-0">Breakfast</th>
+                                            <th class="border-top-0">Lunch </th>
+                                            <th class="border-top-0">Dinner</th>
+                                            <th class="border-top-0">Tea Break</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-bind="foreach: dailyBills">
+                                        <tr>
+                                            <td data-bind="text: moment(date).format('DD/MM/yyyy')"></td>
+                                            <td data-bind="text: breakFastBill"></td>
+                                            <td data-bind="text: lunchBill"></td>
+                                            <td data-bind="text: dinnerBill"></td>
+                                            <td data-bind="text: teaBreakBill"></td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td>Total</td>
+                                            <td data-bind="text: totalBreakFastBill"></td>
+                                            <td data-bind="text: totalLunchBill"></td>
+                                            <td data-bind="text: totalDinnerBill"></td>
+                                            <td data-bind="text: totalTeaBreakBill"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" data-bind="with: SelMessBill">
+                    <div class="col-sm-12">
+                        <div class="printinfo-container">
+                            <label>Casual Mess Bill: </label> <span data-bind="text: totalCasualBill"></span><br />
+                            <label>Extra Messing: </label> <span data-bind="text: totalExtraMessing"></span><br />
+                            <label>Cafeteria Bill: </label> <span data-bind="text: totalCafeBill"></span><br />
+                            <label>Utility Bill: </label> <span data-bind="text: totalUtilityBill"></span><br />
+                        </div>
+                        <div class="printinfo-container">
+                            <label>Total Mess Bill: </label> <span data-bind="text: totalMessBill"></span><br />
+                        </div>
+                        <div>
+                            <b>
+                                The above-mentioned officer has paid the due bill for the month of ________ and certified
+                                hereby.
+                            </b>
+                        </div>
+                    </div>
+                    <div class="print-signature">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <p style="margin-bottom: 0; text-align: center;">_______________________</p>
+                                <p style="text-align: center">Mess Comd</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p style="margin-bottom: 0; text-align: center;">_______________________</p>
+                                <p style="text-align: center">Mess Secretary</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p style="margin-bottom: 0; text-align: center;">_______________________</p>
+                                <p style="text-align: center">PMC</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <environment names="Development">
+        <link href="https://printjs-4de6.kxcdn.com/print.min.css" rel="stylesheet" />
+        <script src="~/js/viewmodels/messBillViewModel.js" asp-append-version="true"></script>
+        <script src="~/js/models/messMember.js" asp-append-version="true"></script>
+        <script src="https://printjs-4de6.kxcdn.com/print.min.js" asp-append-version="true"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    </environment>
+    <environment names="Staging,Production">
+        <link href="https://printjs-4de6.kxcdn.com/print.min.css" rel="stylesheet" />
+        <script src="~/js/viewmodels/messBillViewModel.js" asp-append-version="true"></script>
+        <script src="~/js/models/messMember.js" asp-append-version="true"></script>
+        <script src="https://printjs-4de6.kxcdn.com/print.min.js" asp-append-version="true"></script>
+    </environment>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var viewModel = new MessBillViewModel();
+            ko.applyBindings(viewModel, document.getElementById('mess-bill'));
+            var memberId = getParamValueFromUrl('memberid');
+            viewModel.SelMemberId(memberId);
+        });
+    </script>
+}

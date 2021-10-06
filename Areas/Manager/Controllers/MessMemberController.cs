@@ -32,5 +32,30 @@ namespace MessingSystem.Areas.Manager.Controllers
         {
             return View();
         }
+
+        public IActionResult ExtraMessings()
+        {
+            return View();
+        }
+
+        public IActionResult CafeterialBills()
+        {
+            return View();
+        }
+
+        public IActionResult UtilityBills()
+        {
+            return View();
+        }
+
+        public IActionResult MonthlyBill()
+        {
+            return View();
+        }
+
+        public IActionResult Rooms()
+        {
+            return View();
+        }
     }
 }

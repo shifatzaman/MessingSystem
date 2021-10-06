@@ -7,5 +7,6 @@
         self.date = ko.observable(new Date());
         self.itemType = ko.observable();
         self.quantity = ko.observable();
+        self.unitPrice = ko.observable();
     }
 }

@@ -1,0 +1,133 @@
+﻿@{
+    ViewData["Title"] = "Mess Members";
+}
+
+
+<div class="page-breadcrumb bg-white">
+    <div class="row align-items-center">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Rooms</h4>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container-fluid" id="mess-room">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <input type="checkbox" data-bind="checked: VacantRoomsOnly, value: VacantRoomsOnly" /> Show vacant rooms only
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <button type="button" class="btn btn-primary pull-right" style="float:right;" data-bind="click: AddRoom">Add</button>
+            <div class="white-box">
+                <h3 class="box-title">Rooms</h3>
+                <div class="table-responsive">
+                    <table class="table text-nowrap">
+                        <thead>
+                            <tr>
+                                <th class="border-top-0">#</th>
+                                <th class="border-top-0">Room No</th>
+                                <th class="border-top-0">Type</th>
+                                <th class="border-top-0">Allocated To</th>
+                                <th class="border-top-0">Availability</th>
+                                <th class="border-top-0">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: Rooms">
+                            <tr>
+                                <td data-bind="text: $index() + 1"></td>
+                                <td data-bind="text: roomNo"></td>
+                                <td data-bind="text: roomTypeName"></td>
+                                <td data-bind="text: allocatedTo"></td>
+                                <td data-bind="text: availability"></td>
+                                <td>
+                                    <a data-bind="click: $root.EditRoom" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit</a>
+                                    <a data-bind="click: $root.DeleteRoom" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="roomentry" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add/Update Room</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="form-horizontal form-material" method="POST" id="member-form" data-bind="submit: SaveRoom">
+                    <div class="modal-body">
+
+                        <!-- ko with: SelRoom-->
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Room No</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" data-bind="textInput: roomNo" name="roomNo" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Room Type</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <select data-bind='options: $root.RoomTypes, optionsCaption: "Select Type", optionsText: "key", optionsValue : "value", value: type' class="form-select shadow-none p-0 border-0 form-control-line" name="type">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="allc" class="p-0" style="margin-right: 5px">Allocate Room</label> <input type="checkbox" data-bind="checked: isAllocated, value: isAllocated" name="allc" id="allc"/> 
+                        </div>
+                        <div class="form-group mb-4" data-bind="visible: isAllocated">
+                            <label class="col-md-12 p-0">Allocate To</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" data-bind="textInput: allocatedTo" name="allocatedTo" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-danger" style="color: #fff !important;" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            
+               
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <environment names="Development">
+        <script src="~/js/viewmodels/roomsViewModel.js" asp-append-version="true"></script>
+        <script src="~/js/models/room.js" asp-append-version="true"></script>
+        <script src="~/js/models/messMember.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/viewmodels/roomsViewModel.js" asp-append-version="true"></script>
+        <script src="~/js/models/room.js" asp-append-version="true"></script>
+        <script src="~/js/models/messMember.js" asp-append-version="true"></script>
+    </environment>
+
+    <script type="text/javascript">
+        loggedInUserGuard();
+        $(document).ready(function () {
+            var viewModel = new RoomsViewModel();
+            ko.applyBindings(viewModel, document.getElementById('mess-room'));
+            viewModel.GetRooms();
+        });
+    </script>
+}

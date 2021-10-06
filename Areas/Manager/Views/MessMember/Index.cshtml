@@ -36,6 +36,7 @@
                                 <th class="border-top-0">Date of entry</th>
                                 <th class="border-top-0">Maritial Status</th>
                                 <th class="border-top-0">Member Status</th>
+                                <th class="border-top-0">Action</th>
                             </tr>
                         </thead>
                         <tbody data-bind="foreach: MessMembers">
@@ -51,7 +52,13 @@
                                 <td data-bind="text: moment(dateOfEntry).format('MMMM Do YYYY')"></td>
                                 <td data-bind="text: maritialStatus"></td>
                                 <td data-bind="text: memberStatusString"></td>
-
+                                <td>
+                                    <a data-bind="click: $root.EditMember" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-edit" aria-hidden="true"></i> Edit Member</a><br />
+                                    <a data-bind="click: $root.DeleteMember" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete Member</a><br />
+                                    <a data-bind="click: $root.GoToExtraMessing" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-plus" aria-hidden="true"></i> Add Extra Messing</a><br />
+                                    <a data-bind="click: $root.GoToCafeteriaBill" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-plus" aria-hidden="true"></i> Add Cafeterial Bill</a><br />
+                                    <a data-bind="click: $root.GenerateMonthlyBill" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-print" aria-hidden="true"></i> Generate Monthly Bill</a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

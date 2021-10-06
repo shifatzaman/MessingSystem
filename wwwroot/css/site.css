@@ -84,3 +84,49 @@ body {
     list-style: none !important;
     padding: 0 !important;
 }
+
+.btn {
+    border-radius: 3px !important;
+}
+
+.small-btn {
+    padding: 2px 6px !important;
+    font-size: 12px !important;
+}
+
+.btn-white {
+    color: inherit !important;
+    background: white !important;
+    border: 1px solid #e7eaec !important;
+    background: inherit !important ;
+}
+
+.printinfo-container {
+    margin-bottom: 40px !important;
+}
+
+.printinfo-container label, .printinfo-container span {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+}
+
+
+.print-signature {
+    max-width: 80% !important;
+    margin: auto !important;
+    margin-top: 70px !important;
+    font-weight: 700 !important;
+}
+
+.txt-white{
+    color: white !important;
+}
+
+
+
+@media (min-width: 980px) {
+    .ms-input {
+        max-width: 40% !important;
+        margin: auto !important;
+    }
+}

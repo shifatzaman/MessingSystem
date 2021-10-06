@@ -27,5 +27,6 @@ namespace MessingSystem.Domain
 
         public string MaritialStatus { get; set; }
         public int MemberStatus { get; set; }
+        public int UserId { get; set; }
     }
 }

@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Mess Members";
+}
+
+
+<div class="page-breadcrumb bg-white">
+    <div class="row align-items-center">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Utility Bills</h4>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container-fluid" id="utility-bill">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+        <div class="col-sm-12">
+            <button type="button" class="btn btn-primary pull-right" style="float:right;" data-bind="click: AddUtilityBill">Add</button>
+            <div class="white-box">
+                <h3 class="box-title">Utility Bills</h3>
+                <div class="table-responsive">
+                    <table class="table text-nowrap">
+                        <thead>
+                            <tr>
+                                <th class="border-top-0">#</th>
+                                <th class="border-top-0">Date</th>
+                                <th class="border-top-0">Item</th>
+                                <th class="border-top-0">Amount</th>
+                                <th class="border-top-0">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: UtilityBills">
+                            <tr>
+                                <td data-bind="text: $index() + 1"></td>
+                                <td data-bind="text: date"></td>
+                                <td data-bind="text: item"></td>
+                                <td data-bind="text: price"></td>
+                                <td>
+                                    <a data-bind="click: $root.EditUtilityBill" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit</a>
+                                    <a data-bind="click: $root.DeleteUtilityBill" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="utilityBill" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Utility Bill</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="form-horizontal form-material" method="POST" id="member-form" data-bind="submit: SaveUtilityBill">
+                    <div class="modal-body">
+
+                        <!-- ko with: SelUtilityBill-->
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Date</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="date" data-bind="value : date" name="date" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Item</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" data-bind="textInput: item" name="item" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Amount</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="number" data-bind="textInput: price" name="price" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-danger" style="color: #fff !important;" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <environment names="Development">
+        <script src="~/js/viewmodels/utilityBillViewModel.js" asp-append-version="true"></script>
+        <script src="~/js/models/utilityBill.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/viewmodels/utilityBillViewModel.js" asp-append-version="true"></script>
+        <script src="~/js/models/utilityBill.js" asp-append-version="true"></script>
+    </environment>
+
+    <script type="text/javascript">
+        loggedInUserGuard();
+        $(document).ready(function () {
+            var viewModel = new UtilityBillViewModel();
+            ko.applyBindings(viewModel, document.getElementById('utility-bill'));
+            viewModel.GetUtilityBills();
+        });
+    </script>
+}

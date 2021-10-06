@@ -7,6 +7,7 @@ namespace MessingSystem.Models
 {
     public class AddInventoryItemTypeViewModel
     {
+        public int ItemTypeId { get; set; }
         public string Name { get; set; }
         public string Unit { get; set; }
 

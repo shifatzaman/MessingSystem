@@ -38,6 +38,10 @@ namespace MessingSystem.Data
 
                 e.Property(pr => pr.PasswordSalt).HasColumnName("passwordsalt");
 
+                e.Property(pr => pr.Role).HasColumnName("role").HasDefaultValue(0);
+
+                e.HasQueryFilter(pr => !pr.IsDeleted);
+
             });
 
 
@@ -56,6 +60,8 @@ namespace MessingSystem.Data
                 e.Property(pr => pr.Quantity).HasColumnName("quantity");
 
                 e.Property(pr => pr.IsDeleted).HasColumnName("isdeleted");
+
+                e.Property(pr => pr.UnitPrice).HasColumnName("unitprice");
 
                 e.HasQueryFilter(pr => !pr.IsDeleted);
 
@@ -89,7 +95,9 @@ namespace MessingSystem.Data
         public DbSet<MealItem> MealItems { get; set; }
         public DbSet<DailyMessing> DailyMessings { get; set; }
         public DbSet<DailyMessingItem> DailyMessingItems { get; set; }
-
-
+        public DbSet<ExtraMessing> ExtraMessings { get; set; }
+        public DbSet<CafeterialBill> CafeterialBills { get; set; }
+        public DbSet<UtilityBill> UtilityBills { get; set; }
+        public DbSet<Room> Rooms { get; set; }
     }
 }

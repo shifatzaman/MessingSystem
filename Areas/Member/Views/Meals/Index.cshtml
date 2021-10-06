@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Meal In/Outs";
+}
+
+
+<div class="page-breadcrumb bg-white">
+    <div class="row align-items-center">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Mean In/Out</h4>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container-fluid" id="member-meals">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <div class="col-md-12 border-bottom p-0">
+                <input type="date" name="date" class="form-control p-0 border-0" data-bind="value: SelDate">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <button type="button" class="btn btn-secondary pull-right" data-bind="click: GenerateDailyMeals">Generate</button>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box" data-bind="visible: MealsByDate && MealsByDate() && MealsByDate().length > 0">
+                <h3 class="box-title">Meal in/outs (<span data-bind="text: moment(SelDate()).format('MMMM Do YYYY')"></span>)</h3>
+                <div class="table-responsive">
+                    <table class="table text-nowrap">
+                        <thead>
+                            <tr>
+                                <th class="border-top-0">BA No</th>
+                                <th class="border-top-0">Rank</th>
+                                <th class="border-top-0">Name</th>
+                                <th class="border-top-0">Breakfast</th>
+                                <th class="border-top-0">Lunch</th>
+                                <th class="border-top-0">Dinner</th>
+                                <th class="border-top-0">Treabreak</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: MealsByDate">
+                            <tr>
+                                <td data-bind="text: bnumb"></td>
+                                <td data-bind="text: rank"></td>
+                                <td data-bind="text: memberName"></td>
+                                <td><input type="checkbox" data-bind="checked: breakFastEnabled, value: breakFastEnabled" /></td>
+                                <td><input type="checkbox" data-bind="checked: lunchEnabled, value: lunchEnabled" /></td>
+                                <td><input type="checkbox" data-bind="checked: dinnerEnabled, value: dinnerEnabled" /></td>
+                                <td><input type="checkbox" data-bind="checked: teaBreakEnabled, value: teaBreakEnabled" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-secondary pull-right" data-bind="click: UpdateMeals">Update</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <environment names="Development">
+        <script src="~/js/viewmodels/mealsViewModel.js" asp-append-version="true"></script>
+        <script src="~/js/models/meals.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/viewmodels/mealsViewModel.js" asp-append-version="true"></script>
+        <script src="~/js/models/meals.js" asp-append-version="true"></script>
+    </environment>
+
+    <script type="text/javascript">
+        loggedInUserGuard();
+        $(document).ready(function () {
+            var viewModel = new MealsViewModel();
+            ko.applyBindings(viewModel, document.getElementById('member-meals'));
+        });
+    </script>
+}
