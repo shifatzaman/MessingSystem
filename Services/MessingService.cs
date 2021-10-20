@@ -528,9 +528,9 @@ namespace MessingSystem.Services
                 BillPeriodEnd = endDate,
                 MemberId = memberId,
                 DailyBills = dailyBills,
-                TotalExtraMessing = extraMessingBill,
-                TotalCafeBill = cafeBill,
-                TotalUtilityBill = utilityBill
+                TotalExtraMessing = Math.Ceiling(extraMessingBill),
+                TotalCafeBill = Math.Ceiling(cafeBill),
+                TotalUtilityBill = Math.Ceiling(utilityBill)
             };
 
             return messBill;
@@ -615,7 +615,15 @@ namespace MessingSystem.Services
 
         public decimal GetTotalUtilityBillForMemberByDateRange(DateTime startDate, DateTime endDate)
         {
-            return dbContext.UtilityBills.Where(e => e.Date.Date >= startDate && e.Date.Date <= endDate).Select(e => e.Price).Sum();
+            var totalUtilityBillInDateRange = dbContext.UtilityBills.Where(e => e.Date.Date >= startDate && e.Date.Date <= endDate).Select(e => e.Price).Sum();
+            var memberCount = dbContext.MessMembers.Count();
+
+            if (memberCount > 0)
+            {
+                return totalUtilityBillInDateRange / (decimal)memberCount;
+            }
+
+            return totalUtilityBillInDateRange;
         }
 
         public void DeleteMessMember(MessMember messMember)

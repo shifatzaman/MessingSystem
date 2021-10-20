@@ -19,7 +19,7 @@ namespace MessingSystem.Models
             {
 
                 if (DailyBills != null && DailyBills.Count > 0)
-                    return DailyBills.Select(d => d.LunchBill).Sum();
+                    return DailyBills.Select(d => Math.Ceiling(d.LunchBill)).Sum();
 
                 return 0;
             }
@@ -29,7 +29,7 @@ namespace MessingSystem.Models
             {
 
                 if (DailyBills != null && DailyBills.Count > 0)
-                    return DailyBills.Select(d => d.BreakFastBill).Sum();
+                    return DailyBills.Select(d => Math.Ceiling(d.BreakFastBill)).Sum();
 
                 return 0;
             }
@@ -39,7 +39,7 @@ namespace MessingSystem.Models
             {
 
                 if (DailyBills != null && DailyBills.Count > 0)
-                    return DailyBills.Select(d => d.DinnerBill).Sum();
+                    return DailyBills.Select(d => Math.Ceiling(d.DinnerBill)).Sum();
 
                 return 0;
             }
@@ -49,7 +49,7 @@ namespace MessingSystem.Models
             {
 
                 if (DailyBills != null && DailyBills.Count > 0)
-                    return DailyBills.Select(d => d.TeaBreakBill).Sum();
+                    return DailyBills.Select(d => Math.Ceiling(d.TeaBreakBill)).Sum();
 
                 return 0;
             }
@@ -57,7 +57,7 @@ namespace MessingSystem.Models
 
 
         public decimal TotalCasualBill { get {
-                return TotalLunchBill + TotalBreakFastBill + TotalDinnerBill + TotalTeaBreakBill;
+                return Math.Ceiling(TotalLunchBill + TotalBreakFastBill + TotalDinnerBill + TotalTeaBreakBill);
         } }
         public decimal TotalCafeBill { get; set; }
         public decimal TotalExtraMessing { get; set; }
@@ -66,7 +66,7 @@ namespace MessingSystem.Models
         public decimal TotalMessBill {
             get
             {
-                return TotalCasualBill + TotalCafeBill + TotalExtraMessing + TotalUtilityBill;
+                return Math.Ceiling(TotalCasualBill + TotalCafeBill + TotalExtraMessing + TotalUtilityBill);
             }
         }
     }
