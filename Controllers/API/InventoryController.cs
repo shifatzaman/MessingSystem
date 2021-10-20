@@ -83,7 +83,7 @@ namespace MessingSystem.Controllers.API
                 if (User != null && User.Identity != null)
                 {
                     var items = _inventoryService.GetInventoryItems();
-                    return response.CreateSuccessRespone(items, "Inventory history generated.");
+                    return response.CreateSuccessRespone(items, "Bazar history generated.");
                 }
                 else
                 {
@@ -152,12 +152,12 @@ namespace MessingSystem.Controllers.API
                     if (model.ItemTypeId > 0)
                     {
                         _inventoryService.UpdateInventoryItemType(model);
-                        return response.CreateSuccessRespone(null, "Inventory item updated successfully.");
+                        return response.CreateSuccessRespone(null, "Store item updated successfully.");
                     }
                     else
                     {
                         _inventoryService.AddInventoryItemType(model);
-                        return response.CreateSuccessRespone(null, "Inventory item added successfully.");
+                        return response.CreateSuccessRespone(null, "Store item added successfully.");
                     }
                     
                 }
@@ -252,7 +252,7 @@ namespace MessingSystem.Controllers.API
                     {
                         var items = _inventoryService.GetInventoryItemTypes();
                         var itemVMs = _mapper.Map<IList<InventoryItemType>, IList<FetchInventoryItemTypeViewModel>>(items);
-                        return response.CreateSuccessRespone(items, "Inventory items generated");
+                        return response.CreateSuccessRespone(items, "Store items generated");
                     }
                     else
                     {
@@ -300,7 +300,7 @@ namespace MessingSystem.Controllers.API
                     if (hasAccess)
                     {
                         _inventoryService.DeleteInventoryItemType(itemTypeId);
-                        return response.CreateSuccessRespone(string.Empty, "Inventory item deleted");
+                        return response.CreateSuccessRespone(string.Empty, "Store item deleted");
                     }
                     else
                     {

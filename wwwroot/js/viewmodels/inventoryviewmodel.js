@@ -270,7 +270,12 @@ var inventoryItemValidationRules = {
             required: true
         },
         quantity: {
-            required: true
+            required: true,
+            number: true
+        },
+        unitPrice: {
+            required: true,
+            number: true
         }
     },
     messages: {
@@ -278,10 +283,15 @@ var inventoryItemValidationRules = {
             required: "Please enter date"
         },
         type: {
-            required: "Please enter type of inventory item"
+            required: "Please enter type of store item"
         },
         quantity: {
-            required: "Please enter quantity"
+            required: "Please enter quantity",
+            number: "Quantity must be a number"
+        },
+        unitPrice: {
+            required: "Please enter unit price",
+            number: "Unit price must be a number"
         }
     }
 };
@@ -295,10 +305,12 @@ var inventoryItemTypeValidationRules = {
             required: true
         },
         unitPrice: {
-            required: true
+            required: true,
+            number: true
         },
         quantity: {
-            required: true
+            required: true,
+            number: true
         }
     },
     messages: {
@@ -309,10 +321,12 @@ var inventoryItemTypeValidationRules = {
             required: "Please enter unit of measurement"
         },
         unitPrice: {
-            required: "Please enter per unit price"
+            required: "Please enter per unit price",
+            number: "Unit price must be a number"
         },
         quantity: {
-            required: "Please enter quantity"
+            required: "Please enter quantity",
+            number: "Quantity must be a number"
         }
     }
 };
