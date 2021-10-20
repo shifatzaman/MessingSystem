@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Bazar and Entry";
+    ViewData["Title"] = "Add Bazar Entry";
 }
 
 
@@ -87,7 +87,6 @@
             ko.applyBindings(inventoryVM, document.getElementById('inventory-add'));
             inventoryVM.GetInventoryItemTypes();
             var inventoryId = getParamValueFromUrl('inventoryId');
-            inventoryVM.SelInventoryId(inventoryId);
         });
     </script>
 }

@@ -130,3 +130,7 @@ body {
         margin: auto !important;
     }
 }
+
+.error {
+    color: red !important;
+}
