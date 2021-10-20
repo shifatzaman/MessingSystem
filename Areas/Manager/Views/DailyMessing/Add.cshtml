@@ -17,7 +17,7 @@
         <div class="col-sm-12">
             <div class="card ms-input">
                 <div class="card-body">
-                    <form class="form-horizontal form-material" method="POST" id="member-form" data-bind="submit: AddDailyMessing">
+                    <form class="form-horizontal form-material" method="POST" id="dailymessing-form" data-bind="submit: AddDailyMessing">
                         <!-- ko with: SelDailyMessing-->
                         <div class="form-group mb-4">
                             <label class="col-md-12 p-0">Date</label>
@@ -37,22 +37,22 @@
                             <div class="form-group mb-4">
                                 <label class="col-md-12 p-0">Item Name</label>
                                 <div class="col-md-12 border-bottom p-0">
-                                    <select data-bind='options: $root.InventoryItemTypes, optionsCaption: "Select Item", optionsText: "name", optionsValue : "itemTypeId", value: itemType' class="form-select shadow-none p-0 border-0 form-control-line" name="type">
+                                    <select data-bind='options: $root.InventoryItemTypes, optionsCaption: "Select Item", optionsText: "name", optionsValue : "itemTypeId", value: itemType, event:{ change: $root.InventoryTypeChanged}' class="form-select shadow-none p-0 border-0 form-control-line" name="type">
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group mb-4">
-                                <label class="col-md-12 p-0">Qty</label>
+                                <label class="col-md-12 p-0">Qty <span data-bind="visible: itemType && itemType()">(<span data-bind="text: unit"></span>)</span></label>
                                 <div class="col-md-12 border-bottom p-0">
                                     <input type="text" data-bind="textInput: quantity" name="quantity" class="form-control p-0 border-0">
                                 </div>
                             </div>
                             <div>
-                                <button class="btn btn-secondary mb-5" data-bind="click: $root.AddMoreItemClicked">Add More Item</button>
+                                <button class="btn btn-primary mb-5" data-bind="click: $root.AddMoreItemClicked, visible: $index() == ($parent.dailyMessingItems().length - 1)">Add More Item</button>
+                                <button class="btn btn-danger mb-5 text-white" data-bind="click: $root.RemoveItemClicked, visible: $parent.dailyMessingItems().length > 1">Remove Item</button>
                             </div>
                             <!-- /ko -->
                         </div>
-                        
                         <!-- /ko -->
                         <div class="form-group mb-4">
                             <div>

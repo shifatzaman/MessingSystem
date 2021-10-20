@@ -5,6 +5,8 @@
     }
     else {
         self.itemType = ko.observable(0);
-        self.quantity = ko.observable(0);
+        self.quantity = ko.observable();
     }
+
+    self.unit = ko.observable('');
 }
