@@ -370,21 +370,38 @@ namespace MessingSystem.Services
 
         public void AddExtraMessing(ExtraMessing extraMessing)
         {
+            dbContext.ExtraMessings.Add(extraMessing);
+            dbContext.SaveChanges();
+
             if (extraMessing.Id > 0)
             {
-                dbContext.ExtraMessings.Update(extraMessing);
-            }
-            else
-            {
-                dbContext.ExtraMessings.Add(extraMessing);
-            }
+                var inventoryItem = dbContext.InventoryItemTypes.Where(it => it.ItemTypeId == extraMessing.ItemType).FirstOrDefault();
 
-            dbContext.SaveChanges();
+                if (inventoryItem != null)
+                {
+                    inventoryItem.Quantity -= extraMessing.Quantity;
+                    dbContext.InventoryItemTypes.Update(inventoryItem);
+                    dbContext.SaveChanges();
+                }
+            }
         }
 
-        public IList<ExtraMessing> GetExtraMessings(int memberId)
+        public IList<ExtraMessingViewModel> GetExtraMessings(int memberId)
         {
-            return dbContext.ExtraMessings.Where(e => e.MemberId == memberId).ToList();
+            return (from em in dbContext.ExtraMessings.Where(m => m.MemberId == memberId)
+                    join it in dbContext.InventoryItemTypes
+                    on em.ItemType equals it.ItemTypeId
+                    select new ExtraMessingViewModel
+                    {
+                        Id = em.Id,
+                        MemberId = em.MemberId,
+                        Date = em.Date,
+                        ItemType = em.ItemType,
+                        ItemName = it.Name,
+                        Unit = it.Unit,
+                        UnitPrice = it.UnitPrice,
+                        Quantity = em.Quantity
+                    }).ToList();
         }
 
         public void DeleteExtraMessing(int extraMessingId)
@@ -395,6 +412,18 @@ namespace MessingSystem.Services
             {
                 dbContext.ExtraMessings.Remove(extraMessing);
                 dbContext.SaveChanges();
+
+                if (extraMessing.ItemType > 0)
+                {
+                    var inventoryItem = dbContext.InventoryItemTypes.Where(it => it.ItemTypeId == extraMessing.ItemType).FirstOrDefault();
+
+                    if (inventoryItem != null)
+                    {
+                        inventoryItem.Quantity += extraMessing.Quantity;
+                        dbContext.InventoryItemTypes.Update(inventoryItem);
+                        dbContext.SaveChanges();
+                    }
+                }
             }
         }
 

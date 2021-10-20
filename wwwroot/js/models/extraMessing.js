@@ -6,7 +6,9 @@
     else {
         self.date = ko.observable(moment(new Date()).format('yyyy-MM-DD'));
         self.memberId = ko.observable();
-        self.item = ko.observable();
-        self.price = ko.observable();
+        self.itemType = ko.observable();
+        self.quantity = ko.observable();
     }
+
+    self.unit = ko.observable('');
 }

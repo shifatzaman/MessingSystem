@@ -40,7 +40,8 @@
                                 <th class="border-top-0">#</th>
                                 <th class="border-top-0">Date</th>
                                 <th class="border-top-0">Item</th>
-                                <th class="border-top-0">Amount</th>
+                                <th class="border-top-0">Quantity</th>
+                                <th class="border-top-0">Price</th>
                                 <th class="border-top-0">Action</th>
                             </tr>
                         </thead>
@@ -48,10 +49,10 @@
                             <tr>
                                 <td data-bind="text: $index() + 1"></td>
                                 <td data-bind="text: date"></td>
-                                <td data-bind="text: item"></td>
-                                <td data-bind="text: price"></td>
+                                <td data-bind="text: itemName"></td>
+                                <td data-bind="text: quantityWithUnit"></td>
+                                <td data-bind="text: totalPrice"></td>
                                 <td>
-                                    <a data-bind="click: $root.EditExtraMessing" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit</a>
                                     <a data-bind="click: $root.DeleteExtraMessing" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
                                 </td>
                             </tr>
@@ -71,7 +72,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal form-material" method="POST" id="member-form" data-bind="submit: SaveExtraMessing">
+                <form class="form-horizontal form-material" method="POST" id="extra-messing-form" data-bind="submit: SaveExtraMessing">
                     <div class="modal-body">
 
                         <!-- ko with: SelExtraMessing-->
@@ -84,13 +85,14 @@
                         <div class="form-group mb-4">
                             <label class="col-md-12 p-0">Item</label>
                             <div class="col-md-12 border-bottom p-0">
-                                <input type="text" data-bind="textInput: item" name="item" class="form-control p-0 border-0">
+                                <select data-bind='options: $root.InventoryItemTypes, optionsCaption: "Select Item", optionsText: "name", optionsValue : "itemTypeId", value: itemType, event:{ change: $root.InventoryTypeChanged}' class="form-select shadow-none p-0 border-0 form-control-line" name="type">
+                                </select>
                             </div>
                         </div>
                         <div class="form-group mb-4">
-                            <label class="col-md-12 p-0">Amount</label>
+                            <label class="col-md-12 p-0">Quantity <span data-bind="visible: itemType && itemType()">(<span data-bind="text: unit"></span>)</span></label>
                             <div class="col-md-12 border-bottom p-0">
-                                <input type="number" data-bind="textInput: price" name="price" class="form-control p-0 border-0">
+                                <input type="number" data-bind="textInput: quantity" name="price" class="form-control p-0 border-0">
                             </div>
                         </div>
                         <!-- /ko -->
@@ -128,6 +130,7 @@
             ko.applyBindings(viewModel, document.getElementById('member-extra'));
             var memberId = getParamValueFromUrl('memberid');
             viewModel.SelMemberId(memberId);
+            viewModel.GetInventoryItemTypes();
         });
     </script>
 }

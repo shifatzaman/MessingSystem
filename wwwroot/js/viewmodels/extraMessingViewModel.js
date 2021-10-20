@@ -5,6 +5,39 @@
     self.SelMemberId = ko.observable();
     self.SelExtraMessing = ko.observable(new ExtraMessing());
 
+    self.InventoryItemTypes = ko.observableArray([]);
+
+    self.GetInventoryItemTypes = async function () {
+
+        var baseurl = window.location.origin;
+
+        var apiUrl = baseurl + '/inventory/type/list';
+
+        var response = await getJson(apiUrl, true);
+
+        if (response && response.success && response.data) {
+            self.InventoryItemTypes(response.data);
+        }
+        else {
+            self.InventoryItemTypes([]);
+        }
+    };
+
+    self.InventoryTypeChanged = function (vm) {
+        if (vm && vm.itemType && vm.itemType()) {
+            var matchedItem = ko.utils.arrayFirst(self.InventoryItemTypes(), function (item) {
+                return item.itemTypeId == vm.itemType();
+            });
+
+            if (matchedItem && matchedItem.unit) {
+                vm.unit(matchedItem.unit);
+            }
+            else {
+                vm.unit('');
+            }
+        }
+    }
+
 
     self.GetExtraMessings = async function () {
 
