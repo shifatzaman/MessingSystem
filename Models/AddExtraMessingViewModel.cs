@@ -13,8 +13,8 @@ namespace MessingSystem.Models
 
         public DateTime Date { get; set; }
 
-        public string Item { get; set; }
-
+        public int ItemType { get; set; }
+        public int Quantity { get; set; }
         public decimal Price { get; set; }
     }
 }

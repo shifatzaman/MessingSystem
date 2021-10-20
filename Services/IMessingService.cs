@@ -34,7 +34,7 @@ namespace MessingSystem.Services
 
         void AddExtraMessing(ExtraMessing extraMessing);
 
-        IList<ExtraMessing> GetExtraMessings(int memberId);
+        IList<ExtraMessingViewModel> GetExtraMessings(int memberId);
 
         void DeleteExtraMessing(int extraMessingId);
 

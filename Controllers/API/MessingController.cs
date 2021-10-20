@@ -424,8 +424,33 @@ namespace MessingSystem.Controllers.API
                 if (User != null && User.Identity != null)
                 {
                     var extraMessingData = _mapper.Map<AddExtraMessingViewModel, ExtraMessing>(model);
-                    _messingService.AddExtraMessing(extraMessingData);
-                    return response.CreateSuccessRespone(null, "Extra messing added successfully for this member");
+
+                    if (model.ItemType > 0)
+                    {
+                        var inventoryItem = _inventoryService.GetInventoryItemType(model.ItemType);
+
+                        if (inventoryItem != null)
+                        {
+                            if (inventoryItem.Quantity >= extraMessingData.Quantity)
+                            {
+                                _messingService.AddExtraMessing(extraMessingData);
+                                return response.CreateSuccessRespone(null, "Extra messing added successfully for this member");
+                            }
+                            else
+                            {
+                                response.Message = "Not enough quantity of selected item available in store. For details check store section.";
+                            }
+                        }
+                        else
+                        {
+                            response.Message = "Selected item not found in store";
+                        }
+                    }
+                    else
+                    {
+                        response.Message = "Selecting an item is required";
+                    }
+                    
                 }
                 else
                 {

@@ -14,8 +14,8 @@ namespace MessingSystem.Domain
         public int MemberId { get; set; }
 
         public DateTime Date { get; set; }
-
-        public string Item { get; set; }
+        public int ItemType { get; set; }
+        public int Quantity { get; set; }
 
         public decimal  Price { get; set; }
     }
