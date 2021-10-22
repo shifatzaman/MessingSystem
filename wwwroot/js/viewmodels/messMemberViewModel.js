@@ -4,7 +4,7 @@
     self.SelMessMember = ko.observable(new MessMember());
     self.SelMemberId = ko.observable(0);
     self.MemberStatusOptions = ko.observableArray(memberStatusOptions);
-
+    self.MaritalStatusOptions = ko.observableArray(maritalStatusOptions);
 
     self.GetMessMembers = async function () {
 
