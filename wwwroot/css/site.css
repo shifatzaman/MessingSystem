@@ -134,3 +134,16 @@ body {
 .error {
     color: red !important;
 }
+
+.collapse-action-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #fff !important;
+    float: right;
+}
+
+.btn-blue {
+    background-color: #0074d9 !important;
+    border-color: #0074d9 !important;
+}

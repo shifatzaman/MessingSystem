@@ -56,6 +56,17 @@ var roomOptions = [
     }
 ];
 
+var maritalStatusOptions = [
+    {
+        key: "Unmarried",
+        value: "Unmarried"
+    },
+    {
+        key: "Married",
+        value: "Married"
+    }
+];
+
 function showSpinner() {
     $('#loaderSpinner').show();
 }
