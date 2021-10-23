@@ -1,4 +1,5 @@
 ﻿using MessingSystem.Domain;
+using MessingSystem.Enums;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,40 @@ namespace MessingSystem
                 }
             }
             return true; //if no mismatches.
+        }
+
+        public static bool IsMealStatusChangeValid(DateTime date, int mealType)
+        {
+            var mealDate = new DateTime(date.Year, date.Month, date.Day, 0, 0, 1);
+
+            if (mealType == (int)MealTypes.BreakFast)
+            {
+                var breakFastTimeOnDate = mealDate.AddHours(8);
+                var timeSpan = breakFastTimeOnDate.Subtract(DateTime.Now);
+
+                return timeSpan.TotalMinutes > (8 * 60);
+            }
+            else if (mealType == (int)MealTypes.Lunch)
+            {
+                var breakFastTimeOnDate = mealDate.AddHours(14);
+                var timeSpan = breakFastTimeOnDate.Subtract(DateTime.Now);
+
+                return timeSpan.TotalMinutes > (6 * 60);
+            }
+            else if (mealType == (int)MealTypes.TeaBreak)
+            {
+                var breakFastTimeOnDate = mealDate.AddHours(18);
+                var timeSpan = breakFastTimeOnDate.Subtract(DateTime.Now);
+
+                return timeSpan.TotalMinutes > (10 * 60);
+            }
+            else
+            {
+                var breakFastTimeOnDate = mealDate.AddHours(20);
+                var timeSpan = breakFastTimeOnDate.Subtract(DateTime.Now);
+
+                return timeSpan.TotalMinutes > (6 * 60);
+            }
         }
 
     }
