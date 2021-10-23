@@ -14,7 +14,7 @@
          data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
 
         <header class="topbar" data-navbarbg="skin5">
-            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark wrapper" id="layout-nav">
                 <div class="navbar-header" data-logobg="skin6">
                     <a class="navbar-brand">
                         <!--End Logo icon -->
@@ -27,9 +27,42 @@
                     <a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
                        href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
                 </div>
-                <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+                <div class="navbar-collapse collapse nav-bar" id="navbarSupportedContent" data-navbarbg="skin5">
 
                     <ul class="navbar-nav ms-auto d-flex align-items-center">
+                        <li id="notification-bell-container">
+                            <div class="dropdowns-wrapper">
+                                <div class="dropdown-container">
+                                    <div class="notifications dropdown dd-trigger" id="noti-bell"  data-bind="click: NotificationBellClicked">
+                                        <span class="count animated" id="notifications-count" data-bind="visible: UnseenCount && UnseenCount() > 0, text: UnseenCount"></span>
+                                        <span class="fa fa-bell" id="notifications-bell-icon" style="color:white"></span>
+                                    </div>
+                                    <div class="dropdown-menu animated" id="notification-dropdown">
+                                        <div class="dropdown-header">
+                                            <span class="triangle"></span>
+                                            <span class="heading">Notifications</span>
+                                            <span class="count" id="dd-notifications-count" data-bind="visible: UnseenCount && UnseenCount() > 0, text: UnseenCount"></span>
+                                        </div>
+                                        <div class="dropdown-body">
+                                            <!-- ko foreach: Notifications-->
+                                            <div class="notification" data-bind="css : {new : !seen}">
+                                                <a data-bind="click: $parent.NotificationClicked">
+                                                    <div class="notification-image-wrapper">
+                                                        <div class="notification-image">
+                                                            <img src="~/img/placeholder-profile-pic.jpg" alt="" width="32">
+                                                        </div>
+                                                    </div>
+                                                    <div class="notification-text">
+                                                        <span class="highlight" data-bind="text: message"></span>
+                                                    </div>
+                                                </a>  
+                                            </div>
+                                            <!-- /ko -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
                         <li class="dropdown" style="margin-right: 10px; cursor:pointer;">
                             <a class="profile-pic dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span id="username-upper"></span> <i class=" fas fa-angle-down" aria-hidden="true"></i>
@@ -185,6 +218,7 @@
     <script src="~/js/models/inventoryItem.js" asp-append-version="true"></script>
     <script src="~/js/viewmodels/inventoryviewmodel.js" asp-append-version="true"></script>
     <script src="~/js/models/inventoryItemType.js" asp-append-version="true"></script>
+    <script src="~/js/viewmodels/layoutViewModel.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
     <script>
         loggedInUserGuard();
@@ -194,7 +228,27 @@
             var fullName = user.firstName + ' ' + (user.lastName ? user.lastName : '') ;
             $('#username-upper').text(fullName);
         }
-        
+
+        var layoutVM = new LayoutViewModel();
+        ko.applyBindings(layoutVM, document.getElementById('layout-nav'));
+
+        if (layoutVM && layoutVM.GetNotifications) {
+            layoutVM.GetNotifications();
+            setInterval(function () {
+                layoutVM.GetNotifications();
+            }, 10000);
+        }
+
+        window.onload = function () {
+            var divToHide = document.getElementById('notification-dropdown');
+            document.onclick = function (e) {
+                if (e.target.id !== 'notification-dropdown' && e.target.id != "noti-bell" && e.target.id != "notifications-count" && e.target.id != "notifications-bell-icon") {
+                    //element clicked wasn't the div; hide the div
+                    divToHide.style.display = 'none';
+                }
+            };
+        };
+
 
     </script>
 </body>

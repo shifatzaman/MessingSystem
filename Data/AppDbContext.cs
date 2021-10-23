@@ -99,5 +99,6 @@ namespace MessingSystem.Data
         public DbSet<CafeterialBill> CafeterialBills { get; set; }
         public DbSet<UtilityBill> UtilityBills { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
     }
 }

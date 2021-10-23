@@ -23,18 +23,21 @@ namespace MessingSystem.Controllers.API
         private readonly IInventoryService _inventoryService;
         private readonly IMapper _mapper;
         private readonly IMessingService _messingService;
+        private readonly INotificationService _notificationService;
 
         public MessingController(ILogger<MessingController> logger,
                                  IUserService userService,
                                  IInventoryService inventoryService,
                                  IMapper mapper,
-                                 IMessingService messingService)
+                                 IMessingService messingService,
+                                 INotificationService notificationService)
         {
             _logger = logger;
             _userService = userService;
             _inventoryService = inventoryService;
             _mapper = mapper;
             _messingService = messingService;
+            _notificationService = notificationService;
         }
 
         [HttpPost]
@@ -289,9 +292,104 @@ namespace MessingSystem.Controllers.API
             {
                 if (User != null && User.Identity != null)
                 {
-                    _messingService.DeleteAllMeals(model.Date);
-                    _messingService.AddMemberMeals(model.MemberMeals);
-                    response.Message = "Mess member meal added successfully";
+
+                    var userId = Convert.ToInt32(User.Identity.GetId());
+
+                    if (userId > 0)
+                    {
+                        var user = _userService.GetUserById(userId);
+                        bool isValid = true;
+
+                        if (user != null && user.Role == (int)UserRoles.Member)
+                        {
+                            var memberId = _userService.GetMemberId(userId);
+
+                            if (memberId > 0)
+                            {
+                                var memberMealOnDate = _messingService.GetMemberMealsByDate(model.Date, memberId).FirstOrDefault();
+                                var memberMeal = model.MemberMeals.Where(m => m.MemberId == memberId).FirstOrDefault();
+
+                                if (memberMeal != null)
+                                {
+                                    //Check Breakfast TimeStamp
+
+                                    if (memberMealOnDate == null)
+                                    {
+                                        if (!memberMeal.BreakFastEnabled)
+                                        {
+                                            isValid = CommonUtilities.IsMealStatusChangeValid(model.Date, (int)MealTypes.BreakFast);
+                                        }
+
+                                        if (!memberMeal.LunchEnabled && isValid)
+                                        {
+                                            isValid = CommonUtilities.IsMealStatusChangeValid(model.Date, (int)MealTypes.Lunch);
+                                        }
+
+                                        if (!memberMeal.TeaBreakEnabled && isValid)
+                                        {
+                                            isValid = CommonUtilities.IsMealStatusChangeValid(model.Date, (int)MealTypes.TeaBreak);
+                                        }
+
+                                        if (!memberMeal.DinnerEnabled && isValid)
+                                        {
+                                            isValid = CommonUtilities.IsMealStatusChangeValid(model.Date, (int)MealTypes.Dinner);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (memberMeal.BreakFastEnabled != memberMealOnDate.BreakFastEnabled)
+                                        {
+                                            isValid = CommonUtilities.IsMealStatusChangeValid(model.Date, (int)MealTypes.BreakFast);
+                                        }
+
+                                        if (memberMeal.LunchEnabled != memberMealOnDate.LunchEnabled && isValid)
+                                        {
+                                            isValid = CommonUtilities.IsMealStatusChangeValid(model.Date, (int)MealTypes.Lunch);
+                                        }
+
+                                        if (memberMeal.TeaBreakEnabled != memberMealOnDate.TeaBreakEnabled && isValid)
+                                        {
+                                            isValid = CommonUtilities.IsMealStatusChangeValid(model.Date, (int)MealTypes.TeaBreak);
+                                        }
+
+                                        if (memberMeal.DinnerEnabled != memberMealOnDate.DinnerEnabled && isValid)
+                                        {
+                                            isValid = CommonUtilities.IsMealStatusChangeValid(model.Date, (int)MealTypes.Dinner);
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+                        }
+
+                        if (!isValid)
+                        {
+                            response.Message = "Failed to update meal status. Time has already expired to update or change meal status for this date";
+                        }
+                        else
+                        {
+                            _messingService.DeleteAllMeals(model.Date);
+                            _messingService.AddMemberMeals(model.MemberMeals);
+                            response = response.CreateSuccessRespone(null, "Mess member meal added successfully");
+
+                            #region Add notification for admin
+                            if (user != null && user.Role == (int)UserRoles.Member)
+                            {
+                                string notificationMsg = string.Format("{0} has updated his meal satus for {1}", user.FirstName + " " + user.LastName, model.Date.ToString("dd/MM/yyyy"));
+                                string notificationUrl = "/Manager/MessMember/Meals";
+
+                                _notificationService.AddNotification(userId, DateTime.Now, notificationMsg, notificationUrl, sendToAllAdmins: true);
+                            }
+                            #endregion
+                        }
+
+                    }
+                    else
+                    {
+                        response.Message = "Unauthorized Access";
+                    }
                 }
                 else
                 {

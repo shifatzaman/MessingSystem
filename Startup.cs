@@ -47,6 +47,7 @@ namespace MessingSystem
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IInventoryService, InventoryService>();
             services.AddScoped<IMessingService, MessingService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
 
 
