@@ -440,8 +440,8 @@ namespace MessingSystem.Controllers.API
 
         [HttpPost]
         [Authorize]
-        [Route("daily/add")]
-        public ResponseModel AddDailyMessing([FromBody] AddDailyMessingViewModel model)
+        [Route("template/add")]
+        public ResponseModel AddDailyMessingTemplate([FromBody] DailyMessingTemplateViewModel model)
         {
             var response = new ResponseModel();
 
