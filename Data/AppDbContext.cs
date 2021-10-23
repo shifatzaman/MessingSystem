@@ -100,5 +100,7 @@ namespace MessingSystem.Data
         public DbSet<UtilityBill> UtilityBills { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<DailyMessingTemplate> DailyMessingTemplates { get; set; }
+        public DbSet<DailyMessingTemplateItem> DailyMessingTemplateItems { get; set; }
     }
 }

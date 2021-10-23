@@ -438,6 +438,39 @@ namespace MessingSystem.Controllers.API
             return response;
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route("daily/add")]
+        public ResponseModel AddDailyMessing([FromBody] AddDailyMessingViewModel model)
+        {
+            var response = new ResponseModel();
+
+            if (!ModelState.IsValid)
+            {
+                response.Message = "Inalid Input Parameter";
+            }
+
+            try
+            {
+                if (User != null && User.Identity != null)
+                {
+                    _messingService.AddDailyMessing(model);
+                    response.Message = "Daily messing added successfully";
+                }
+                else
+                {
+                    response.Message = "Access Denied";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Error Occured";
+                _logger.LogDebug(string.Format("Error in messing/daily/add - {0}", ex.Message));
+            }
+
+            return response;
+        }
+
         [HttpGet]
         [Authorize]
         [Route("daily/{date}")]
