@@ -707,3 +707,8 @@ body {
     -webkit-animation-name: zoomOut;
     animation-name: zoomOut;
 }
+
+.notice-text {
+    word-break: break-word;
+    white-space: pre-wrap;
+}
