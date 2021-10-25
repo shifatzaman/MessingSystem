@@ -211,6 +211,27 @@ namespace MessingSystem.Services
             }
         }
 
+        public IList<DailyMessingTemplate> GetDailyMessingTemplates()
+        {
+            var dailyMessingTemplates = dbContext.DailyMessingTemplates.ToList();
+
+            if (dailyMessingTemplates != null)
+            {
+                var templateIdList = dailyMessingTemplates.Select(dt => dt.Id).ToList();
+
+                var templateItemList = dbContext.DailyMessingTemplateItems.Where(it => templateIdList.Contains(it.DailyMessingTemplateId))
+                                                                          .ToList();
+
+                foreach (var item in dailyMessingTemplates)
+                {
+                    item.DailyMessingTemplateItems = templateItemList.Where(it => it.DailyMessingTemplateId == item.Id).ToList();
+                }
+
+            }
+
+            return dailyMessingTemplates;
+        }
+
         public void AddDailyMessing(AddDailyMessingViewModel model)
         {
             var dailyMessing = new DailyMessing

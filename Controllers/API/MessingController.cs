@@ -440,7 +440,7 @@ namespace MessingSystem.Controllers.API
 
         [HttpPost]
         [Authorize]
-        [Route("template/add")]
+        [Route("template")]
         public ResponseModel AddDailyMessingTemplate([FromBody] DailyMessingTemplateViewModel model)
         {
             var response = new ResponseModel();
@@ -454,7 +454,7 @@ namespace MessingSystem.Controllers.API
             {
                 if (User != null && User.Identity != null)
                 {
-                    _messingService.AddDailyMessing(model);
+                    _messingService.AddDailyMessingTemplate(model);
                     response.Message = "Daily messing added successfully";
                 }
                 else
@@ -499,6 +499,40 @@ namespace MessingSystem.Controllers.API
             {
                 response.Message = "Error Occured";
                 _logger.LogDebug(string.Format("Error in messing/daily/{0} - {1}", date, ex.Message));
+            }
+
+            return response;
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("template")]
+        public ResponseModel GetDailyMessingTemplates()
+        {
+            var response = new ResponseModel();
+
+            if (!ModelState.IsValid)
+            {
+                response.Message = "Inalid Input Parameter";
+            }
+
+            try
+            {
+                if (User != null && User.Identity != null)
+                {
+                    var templates = _messingService.GetDailyMessingTemplates();
+                    var templateVMs = _mapper.Map<IList<DailyMessingTemplate>, IList<DailyMessingTemplateViewModel>>(templates);
+                    return response.CreateSuccessRespone(templateVMs, "Daily messing template list generated");
+                }
+                else
+                {
+                    response.Message = "Access Denied";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Error Occured";
+                _logger.LogDebug(string.Format("Error in messing/template/ - {0}", ex.Message));
             }
 
             return response;

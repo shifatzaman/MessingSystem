@@ -9,6 +9,8 @@
     self.MealOptions = ko.observableArray(mealOptions);
     self.InventoryItemTypes = ko.observableArray([]);
 
+    self.TemplateName = ko.observable('');
+
     self.GetInventoryItemTypes = async function () {
 
         var baseurl = window.location.origin;
@@ -64,6 +66,38 @@
     self.AddDailyMessingConfirmed = async  function () {
         var baseurl = window.location.origin;
         var messingData = ko.toJS(self.SelDailyMessing());
+
+        var apiUrl = baseurl + '/messing/daily/add';
+
+        var response = await postJson(apiUrl, true, messingData);
+
+        if (response && response.success) {
+            showNotificationModal(response.message);
+            self.SelDailyMessing(new DailyMessing());
+            hideSpinner();
+        }
+        else {
+            if (response.message) {
+                showNotificationModal(response.message);
+                self.SelDailyMessing(new DailyMessing());
+            }
+            hideSpinner();
+        }
+    }
+
+    self.SaveTemplateClicked = function () {
+
+    }
+
+
+    self.CopyDailyMessingToTemplate = function () {
+
+    }
+
+    self.SaveTemplateConfirmed = async function () {
+        showSpinner();
+        var messingData = ko.toJS(self.SelDailyMessing());
+        messingData.t
 
         var apiUrl = baseurl + '/messing/daily/add';
 

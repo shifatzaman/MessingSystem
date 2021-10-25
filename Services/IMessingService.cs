@@ -63,5 +63,9 @@ namespace MessingSystem.Services
 
         void UpdateRoom(Room room);
 
+        void AddDailyMessingTemplate(DailyMessingTemplateViewModel model);
+
+        IList<DailyMessingTemplate> GetDailyMessingTemplates();
+
     }
 }
