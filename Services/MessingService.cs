@@ -93,7 +93,7 @@ namespace MessingSystem.Services
             return members;
         }
 
-        public IList<MessMemberViewModel> GetMessMembers(string searchString = null)
+        public IList<MessMemberViewModel> GetMessMembers(string searchString = null, bool includeAdminsOnly = false)
         {
             var members = dbContext.MessMembers.AsQueryable();
 
@@ -102,32 +102,40 @@ namespace MessingSystem.Services
                 members = members.Where(m => m.Name.Contains(searchString));
             }
 
-            return (from member in members
-                    join user in dbContext.Users
-                    on member.UserId equals user.UserId
-                    into memberUser
-                    from mu in memberUser.DefaultIfEmpty()
-                    select new MessMemberViewModel
-                    {
-                        Id  = member.Id,
+            var memberVMs =  (from member in members
+                            join user in dbContext.Users
+                            on member.UserId equals user.UserId
+                            into memberUser
+                            from mu in memberUser.DefaultIfEmpty()
+                            select new MessMemberViewModel
+                            {
+                                Id  = member.Id,
 
-                        Name = member.Name,
+                                Name = member.Name,
 
-                        Bnumb = member.Bnumb,
+                                Bnumb = member.Bnumb,
 
-                        Rank = member.Rank,
+                                Rank = member.Rank,
 
-                        Appt = member.Appt,
+                                Appt = member.Appt,
 
-                        Unit = member.Unit,
-                        ContactNo  = member.ContactNo,
-                        RoomNo = member.RoomNo,
-                        DateOfEntry = member.DateOfEntry,
-                        MaritialStatus = member.MaritialStatus,
-                        MemberStatus = member.MemberStatus,
-                        UserId = member.UserId,
-                        Email = mu != null ? mu.Email : string.Empty
-                    }).ToList();
+                                Unit = member.Unit,
+                                ContactNo  = member.ContactNo,
+                                RoomNo = member.RoomNo,
+                                DateOfEntry = member.DateOfEntry,
+                                MaritialStatus = member.MaritialStatus,
+                                MemberStatus = member.MemberStatus,
+                                UserId = member.UserId,
+                                Email = mu != null ? mu.Email : string.Empty,
+                                FileName = member.FileName,
+                                ImagePath = string.IsNullOrWhiteSpace(member.FileName) ? CommonUtilities.GetDefaultImagePath() : CommonUtilities.GetFullImagePath(member.FileName),
+                                UserRole = mu != null ? mu.Role : -1
+                            }).ToList();
+
+            if (includeAdminsOnly)
+                memberVMs = memberVMs.Where(m => m.UserRole == (int)UserRoles.Admin).ToList();
+
+            return memberVMs;
         }
 
         public MessMemberViewModel GetMessMemberById(int memberId)
@@ -159,7 +167,11 @@ namespace MessingSystem.Services
                         MaritialStatus = member.MaritialStatus,
                         MemberStatus = member.MemberStatus,
                         UserId = member.UserId,
-                        Email = mu != null ? mu.Email : string.Empty
+                        Email = mu != null ? mu.Email : string.Empty,
+                        FileName = member.FileName,
+                        ImagePath = string.IsNullOrWhiteSpace(member.FileName) ? CommonUtilities.GetDefaultImagePath() : CommonUtilities.GetFullImagePath(member.FileName),
+                        UserRole = mu != null ? mu.Role : -1
+
                     }).FirstOrDefault();
         }
 

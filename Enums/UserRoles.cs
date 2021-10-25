@@ -8,6 +8,7 @@ namespace MessingSystem.Enums
     public enum UserRoles
     {
         Manager,
-        Member
+        Member,
+        Admin
     }
 }

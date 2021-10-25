@@ -52,66 +52,18 @@
                 </div>
                 <div class="card-body">
                     <ul class="chatonline">
+                        <!-- ko foreach: Members-->
                         <li>
-                            <a href="javascript:void(0)" class="d-flex align-items-center">
-                                <img src="~/img/placeholder-profile-pic.jpg" alt="user-img" class="img-circle">
+                            <a class="d-flex align-items-center">
+                                <img data-bind="attr : {src : imagePath}" alt="user-img" class="pro-pic">
                                 <div class="ms-2">
-                                    <span class="text-dark">
-                                        Committee member
-                                    </span>
+                                    <h5 data-bind="text: rankWithName"></h5>
+                                    <span data-bind="text: appt"></span><br />
+                                    <span>Contact No: <span data-bind="text: contactNo"></span></span>
                                 </div>
                             </a>
                         </li>
-                        <li>
-                            <a href="javascript:void(0)" class="d-flex align-items-center">
-                                <img src="~/img/placeholder-profile-pic.jpg" alt="user-img" class="img-circle">
-                                <div class="ms-2">
-                                    <span class="text-dark">
-                                        Committee member
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" class="d-flex align-items-center">
-                                <img src="~/img/placeholder-profile-pic.jpg" alt="user-img" class="img-circle">
-                                <div class="ms-2">
-                                    <span class="text-dark">
-                                        Committee member
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" class="d-flex align-items-center">
-                                <img src="~/img/placeholder-profile-pic.jpg" alt="user-img" class="img-circle">
-                                <div class="ms-2">
-                                    <span class="text-dark">
-                                        Committee member
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" class="d-flex align-items-center">
-                                <img src="~/img/placeholder-profile-pic.jpg" alt="user-img" class="img-circle">
-                                <div class="ms-2">
-                                    <span class="text-dark">
-                                        Committee member
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" class="d-flex align-items-center">
-                                <img src="~/img/placeholder-profile-pic.jpg" alt="user-img" class="img-circle">
-                                <div class="ms-2">
-                                    <span class="text-dark">
-                                        Committee member
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
+                        <!-- /ko -->
                     </ul>
                 </div>
             </div>
@@ -137,6 +89,7 @@
             var viewModel = new DashboardViewModel();
             ko.applyBindings(viewModel, document.getElementById('member-dashboard'));
             viewModel.GetNotices();
+            viewModel.GetMembers();
         });
     </script>
 }

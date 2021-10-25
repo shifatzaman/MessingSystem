@@ -69,7 +69,7 @@ namespace MessingSystem.Services
             if (user == null)
                 return (false, "User not found");
 
-            if (user.Role == (int)UserRoles.Manager)
+            if (user.Role == (int)UserRoles.Manager || user.Role == (int)UserRoles.Admin)
                 return (true, "Access Granted");
             else
             {

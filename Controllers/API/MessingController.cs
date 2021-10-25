@@ -4,10 +4,14 @@ using MessingSystem.Enums;
 using MessingSystem.Models;
 using MessingSystem.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,13 +28,15 @@ namespace MessingSystem.Controllers.API
         private readonly IMapper _mapper;
         private readonly IMessingService _messingService;
         private readonly INotificationService _notificationService;
+        private readonly IHostingEnvironment _environment;
 
         public MessingController(ILogger<MessingController> logger,
                                  IUserService userService,
                                  IInventoryService inventoryService,
                                  IMapper mapper,
                                  IMessingService messingService,
-                                 INotificationService notificationService)
+                                 INotificationService notificationService,
+                                 IHostingEnvironment environment)
         {
             _logger = logger;
             _userService = userService;
@@ -38,12 +44,13 @@ namespace MessingSystem.Controllers.API
             _mapper = mapper;
             _messingService = messingService;
             _notificationService = notificationService;
+            _environment = environment;
         }
 
         [HttpPost]
         [Authorize]
         [Route("member/add")]
-        public ResponseModel AddMessMember([FromBody] MessMemberViewModel model)
+        public ResponseModel AddMessMember(IFormFile file)
         {
             var response = new ResponseModel();
 
@@ -54,60 +61,103 @@ namespace MessingSystem.Controllers.API
 
             try
             {
-                if (User != null && User.Identity != null)
-                {
-                    var messMember = _mapper.Map<MessMemberViewModel, MessMember>(model);
+                var model = new MessMemberViewModel();
 
-                    if (messMember.Id > 0)
+                if (Request.Form.ContainsKey("messmember"))
+                {
+                    model = JsonConvert.DeserializeObject<MessMemberViewModel>(Request.Form["messmember"]);
+                }
+
+                try
+                {
+                    if (file != null)
                     {
-                        _messingService.UpdateMessMember(messMember);
+                        var fileContent = file;
+                        if (fileContent != null && fileContent.Length > 0)
+                        {
+                            string path = Path.Combine(_environment.WebRootPath, "Uploads");
+
+                            if (!Directory.Exists(path))
+                            {
+                                Directory.CreateDirectory(path);
+                            }
+
+                            var newFileName =  string.Format("{0}{1}",Guid.NewGuid(), Path.GetExtension(file.FileName));
+                            model.FileName = newFileName;
+
+                            using (FileStream stream = new FileStream(Path.Combine(path, newFileName), FileMode.Create))
+                            {
+                                file.CopyTo(stream);
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                }
+
+                if (model != null)
+                {
+                    if (User != null && User.Identity != null)
+                    {
+                        var messMember = _mapper.Map<MessMemberViewModel, MessMember>(model);
+
+                        if (messMember.Id > 0)
+                        {
+                            _messingService.UpdateMessMember(messMember);
+                        }
+                        else
+                        {
+                            messMember.DateOfEntry = DateTime.Now;
+                            _messingService.AddMessMember(messMember);
+                        }
+
+                        //Add/Update user info
+                        if (!string.IsNullOrWhiteSpace(model.Email) || model.UserRole == (int)UserRoles.Admin)
+                        {
+                            if (messMember.UserId == 0)
+                            {
+                                var userId = _userService.AddUser(new UserViewModel
+                                {
+                                    FirstName = model.Name,
+                                    Email = model.Email,
+                                    Password = model.Password,
+                                    Role = model.UserRole
+                                });
+
+                                messMember.UserId = userId;
+
+                                _messingService.UpdateMessMember(messMember);
+                            }
+                            else if (messMember.UserId > 0)
+                            {
+                                var user = _userService.GetUserById(messMember.UserId);
+                                user.Email = model.Email;
+                                user.Role = model.UserRole;
+
+                                if (!string.IsNullOrWhiteSpace(model.Password))
+                                {
+                                    byte[] passwordHash, passwordSalt;
+                                    CommonUtilities.CreatePasswordHash(model.Password, out passwordHash, out passwordSalt);
+                                    user.PasswordHash = passwordHash;
+                                    user.PasswordSalt = passwordSalt;
+                                }
+
+                                _userService.UpdateUser(user);
+                            }
+                        }
+
+                        return response.CreateSuccessRespone(null, "Member info saved successfully");
+
                     }
                     else
                     {
-                        messMember.DateOfEntry = DateTime.Now;
-                        _messingService.AddMessMember(messMember);
+                        response.Message = "Access Denied";
                     }
-
-                    //Add/Update user info
-                    if (!string.IsNullOrWhiteSpace(model.Email))
-                    {
-                        if (messMember.UserId == 0)
-                        {
-                            var userId = _userService.AddUser(new UserViewModel
-                            {
-                                FirstName = model.Name,
-                                Email = model.Email,
-                                Password = model.Password,
-                                Role = (int)UserRoles.Member
-                            });
-
-                            messMember.UserId = userId;
-
-                            _messingService.UpdateMessMember(messMember);
-                        }
-                        else if (messMember.UserId > 0)
-                        {
-                            var user = _userService.GetUserById(messMember.UserId);
-                            user.Email = model.Email;
-
-                            if (!string.IsNullOrWhiteSpace(model.Password))
-                            {
-                                byte[] passwordHash, passwordSalt;
-                                CommonUtilities.CreatePasswordHash(model.Password,out passwordHash,out passwordSalt);
-                                user.PasswordHash = passwordHash;
-                                user.PasswordSalt = passwordSalt;
-                            }
-
-                            _userService.UpdateUser(user);
-                        }
-                    }
-
-                    return response.CreateSuccessRespone(null, "Member info saved successfully");
-
                 }
                 else
                 {
-                    response.Message = "Access Denied";
+                    response.Message = "Invalid Input";
                 }
             }
             catch (Exception ex)
@@ -122,7 +172,7 @@ namespace MessingSystem.Controllers.API
         [HttpGet]
         [Authorize]
         [Route("member/list")]
-        public ResponseModel GetMessingMembers(string searchString = null)
+        public ResponseModel GetMessingMembers(string searchString = null, bool includeAdminsOnly = false)
         {
             var response = new ResponseModel();
 
@@ -135,7 +185,7 @@ namespace MessingSystem.Controllers.API
             {
                 if (User != null && User.Identity != null)
                 {
-                    var members = _messingService.GetMessMembers(searchString);
+                    var members = _messingService.GetMessMembers(searchString, includeAdminsOnly);
                     return response.CreateSuccessRespone(members, "Member list generated");
                 }
                 else
