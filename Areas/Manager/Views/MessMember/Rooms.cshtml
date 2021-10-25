@@ -19,7 +19,53 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="white-box">
-                <input type="checkbox" data-bind="checked: VacantRoomsOnly, value: VacantRoomsOnly" /> Show vacant rooms only
+                <div class="table-responsive" style="width: 60%">
+                    <table class="table table-bordered text-nowrap" data-bind="with: RoomStats">
+                        <colgroup>
+                            <col span="1" style="width: 25%;">
+                            <col span="1" style="width: 25%;">
+                            <col span="1" style="width: 25%;">
+                            <col span="1" style="width: 25%;">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th colspan="4" style="text-align: center">Room Distribution</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th>Allocated</th>
+                                <th>Vacant</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Regular Room</td>
+                                <td data-bind="text: regularAllocatedRooms"></td>
+                                <td data-bind="text: regularVacantRooms"></td>
+                                <td data-bind="text: totalRegularRooms"></td>
+                            </tr>
+                            <tr>
+                                <td>Guest Room</td>
+                                <td data-bind="text: guestAllocatedRooms"></td>
+                                <td data-bind="text: guestVacantRooms"></td>
+                                <td data-bind="text: totalGuestRooms"></td>
+                            </tr>
+                            <tr>
+                                <td>VIP Room</td>
+                                <td data-bind="text: vipAllocatedRooms"></td>
+                                <td data-bind="text: vipVacantRooms"></td>
+                                <td data-bind="text: totalVipRooms"></td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td data-bind="text: totalAllocatedRooms"></td>
+                                <td data-bind="text: totalVacantRooms"></td>
+                                <td data-bind="text: totalRooms"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -37,6 +83,7 @@
                                 <th class="border-top-0">Type</th>
                                 <th class="border-top-0">Allocated To</th>
                                 <th class="border-top-0">Availability</th>
+                                <th class="border-top-0">Date of entry</th>
                                 <th class="border-top-0">Action</th>
                             </tr>
                         </thead>
@@ -47,6 +94,7 @@
                                 <td data-bind="text: roomTypeName"></td>
                                 <td data-bind="text: allocatedTo"></td>
                                 <td data-bind="text: availability"></td>
+                                <td data-bind="text: DateOfEntryFormatted"></td>
                                 <td>
                                     <a data-bind="click: $root.EditRoom" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit</a>
                                     <a data-bind="click: $root.DeleteRoom" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
@@ -86,12 +134,18 @@
                             </div>
                         </div>
                         <div class="form-group mb-4">
-                            <label for="allc" class="p-0" style="margin-right: 5px">Allocate Room</label> <input type="checkbox" data-bind="checked: isAllocated, value: isAllocated" name="allc" id="allc"/> 
+                            <label for="allc" class="p-0" style="margin-right: 5px">Allocate Room</label> <input type="checkbox" data-bind="checked: isAllocated, value: isAllocated" name="allc" id="allc" />
                         </div>
                         <div class="form-group mb-4" data-bind="visible: isAllocated">
                             <label class="col-md-12 p-0">Allocate To</label>
                             <div class="col-md-12 border-bottom p-0">
                                 <input type="text" data-bind="textInput: allocatedTo" name="allocatedTo" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4" data-bind="visible: isAllocated">
+                            <label class="col-md-12 p-0">Date of entry</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="date" data-bind="value: dateOfEntry" name="dateOfEntry" class="form-control p-0 border-0">
                             </div>
                         </div>
                         <!-- /ko -->

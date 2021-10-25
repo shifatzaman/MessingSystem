@@ -2,6 +2,7 @@
     var self = this;
     self.SelRoom = ko.observable(new Room());
     self.Rooms = ko.observableArray([]);
+    self.RoomStats = ko.observable();
     self.RoomTypes = ko.observableArray(roomOptions);
     self.VacantRoomsOnly = ko.observable(false);
 
@@ -9,18 +10,27 @@
 
         var baseurl = window.location.origin;
 
-        var apiUrl = baseurl + '/messing/rooms?includeVacantRoomsOnly=' + self.VacantRoomsOnly();
+        var apiUrl = baseurl + '/messing/rooms';
 
         var response = await getJson(apiUrl, true);
 
         if (response && response.success && response.data) {
             var arr = []
-            if (Array.isArray(response.data)) {
-                ko.utils.arrayForEach(response.data, function (item) {
+            if (Array.isArray(response.data.rooms)) {
+                ko.utils.arrayForEach(response.data.rooms, function (item) {
+
+                    if (item.dateOfEntry) {
+                        item.dateOfEntry = moment(item.dateOfEntry).format('yyyy-MM-DD')
+                    }
                     var roomItem = new Room(item);
                     arr.push(roomItem);
                 });
             }
+
+            if (response.data.roomStats) {
+                self.RoomStats(response.data.roomStats);
+            }
+
             self.Rooms(arr);
         }
         else {

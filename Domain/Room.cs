@@ -18,5 +18,7 @@ namespace MessingSystem.Domain
         public string AllocatedTo { get; set; }
 
         public bool IsAllocated { get; set; }
+
+        public DateTime? DateOfEntry { get; set; }
     }
 }
