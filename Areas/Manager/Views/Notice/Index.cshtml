@@ -1,0 +1,125 @@
+﻿@{
+    ViewData["Title"] = "Notices";
+}
+
+
+<div class="page-breadcrumb bg-white">
+    <div class="row align-items-center">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Notices</h4>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="container-fluid" id="notice">
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <div class="row">
+        <div class="col-sm-12">
+            <button type="button" class="btn btn-primary pull-right" style="float:right;" data-bind="click: AddNotice">Add</button>
+            <div class="white-box">
+                <h3 class="box-title">Notices</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="border-top-0">#</th>
+                                <th class="border-top-0">Date</th>
+                                <th class="border-top-0">Title</th>
+                                <th class="border-top-0" style="width: 20% !important; word-wrap: break-word;">Message</th>
+                                <th class="border-top-0">Visible in dashboard</th>
+                                <th class="border-top-0">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: Notices">
+                            <tr>
+                                <td data-bind="text: $index() + 1"></td>
+                                <td data-bind="text: date"></td>
+                                <td data-bind="text: title"></td>
+                                <td data-bind="text: message" style="width: 20% !important; word-break: break-word;white-space: pre-wrap;"></td>
+                                <td data-bind="text: isVisible && isVisible() ? 'Yes' : 'No'"></td>
+                                <td>
+                                    <a data-bind="click: $root.EditNotice" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a>
+                                    <a data-bind="click: $root.DeleteNotice" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="notice-add" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Save Notice</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="form-horizontal form-material" method="POST" id="notice-form" data-bind="submit: SaveNotice">
+                    <div class="modal-body">
+
+                        <!-- ko with: SelNotice-->
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Date</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="date" data-bind="value : date" name="date" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Title</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <input type="text" data-bind="textInput: title" name="title" class="form-control p-0 border-0">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0">Message</label>
+                            <div class="col-md-12 border-bottom p-0">
+                                <textarea rows="5" type="text" data-bind="textInput: message" name="message" class="form-control p-0 border-0"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="col-md-12 p-0" for="checkid" style="word-wrap:break-word">
+                                Visible in dashboard  <input id="checkid" type="checkbox" style="margin-left: 10px;" data-bind="value : isVisible, checked: isVisible" />
+                            </label>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-danger" style="color: #fff !important;" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <environment names="Development">
+        <script src="~/js/viewmodels/noticeviewmodel.js" asp-append-version="true"></script>
+        <script src="~/js/models/notice.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/viewmodels/noticeviewmodel.js" asp-append-version="true"></script>
+        <script src="~/js/models/notice.js" asp-append-version="true"></script>
+    </environment>
+
+    <script type="text/javascript">
+        loggedInUserGuard();
+        $(document).ready(function () {
+            var viewModel = new NoticeViewModel();
+            ko.applyBindings(viewModel, document.getElementById('notice'));
+            viewModel.GetNotices();
+        });
+    </script>
+}

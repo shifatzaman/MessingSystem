@@ -102,5 +102,6 @@ namespace MessingSystem.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<DailyMessingTemplate> DailyMessingTemplates { get; set; }
         public DbSet<DailyMessingTemplateItem> DailyMessingTemplateItems { get; set; }
+        public DbSet<Notice> Notices { get; set; }
     }
 }
