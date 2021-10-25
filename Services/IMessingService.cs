@@ -15,7 +15,7 @@ namespace MessingSystem.Services
 
         MessMemberViewModel GetMessMemberById(int memberId);
 
-        IList<MessMemberViewModel> GetMessMembers(string searchString = null);
+        IList<MessMemberViewModel> GetMessMembers(string searchString = null, bool includeAdminsOnly = false);
         MessMember GetMessMember(int memberId);
 
         void DeleteMessMember(MessMember messMember);

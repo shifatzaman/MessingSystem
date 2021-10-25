@@ -5,6 +5,8 @@
     self.SelMemberId = ko.observable(0);
     self.MemberStatusOptions = ko.observableArray(memberStatusOptions);
     self.MaritalStatusOptions = ko.observableArray(maritalStatusOptions);
+    self.UploadedFile = ko.observable();
+    self.UserRoleOptions = ko.observable(userRoleOptions);
 
     self.GetMessMembers = async function () {
 
@@ -22,7 +24,20 @@
         }
     };
 
-    
+    self.ProPicChanged = function (vm, event) {
+
+        if (event && event.target && event.target.files && event.target.files.length > 0)
+        {
+            var uploadedFile = event.target.files[0];
+            var tmppath = URL.createObjectURL(uploadedFile);
+
+            if (vm && vm.imagePath) {
+                vm.imagePath(tmppath);
+            }
+
+            self.UploadedFile(uploadedFile);
+        }
+    };
 
     self.AddNewMemberClicked = function () {
         var baseurl = window.location.origin;
@@ -41,7 +56,11 @@
 
         var apiUrl = baseurl + '/messing/member/add';
 
-        var response = await postJson(apiUrl, true, memberData);
+        var formData = new FormData();
+        formData.append("messmember", ko.toJSON(memberData));
+        formData.append("file", self.UploadedFile());
+
+        var response = await postFormData(apiUrl, true, formData);
 
         if (response && response.success) {
             hideSpinner();

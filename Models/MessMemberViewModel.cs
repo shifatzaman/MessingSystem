@@ -36,5 +36,15 @@ namespace MessingSystem.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public int UserId { get; set; }
+
+        public string FileName { get; set; }
+        public string ImagePath { get; set; }
+        public int UserRole { get; set; }
+
+        public string RankWithName { get {
+
+                return string.IsNullOrEmpty(Rank) ? Name : string.Format("{0} {1}", Rank, Name);
+        } }
+
     }
 }

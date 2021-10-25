@@ -56,6 +56,17 @@ var roomOptions = [
     }
 ];
 
+var userRoleOptions = [
+    {
+        key: "Member",
+        value: 1
+    },
+    {
+        key: "Admin",
+        value: 2
+    }
+];
+
 var maritalStatusOptions = [
     {
         key: "Unmarried",

@@ -74,8 +74,6 @@ async function postFormData(url, creadentialsneeded, data = {}) {
         headers: {
             'Authorization': creadentialsneeded ? `Bearer ${token}` : ''
         },// include, *same-origin, omit
-        redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         body: data
     });
 

@@ -20,7 +20,7 @@ namespace MessingSystem.Services
         {
             if (sendToAllAdmins)
             {
-                var allAdmins = dbContext.Users.Where(u => u.Role == (int)UserRoles.Manager).Select(u=> u.UserId).ToList();
+                var allAdmins = dbContext.Users.Where(u => u.Role == (int)UserRoles.Manager || u.Role == (int)UserRoles.Admin).Select(u=> u.UserId).ToList();
 
                 var notifications = new List<Notification>();
 

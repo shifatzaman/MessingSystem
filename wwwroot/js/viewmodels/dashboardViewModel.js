@@ -2,6 +2,7 @@
     var self = this;
 
     self.Notices = ko.observableArray();
+    self.Members = ko.observableArray();
 
     self.GetNotices = async function () {
 
@@ -28,5 +29,21 @@
             self.Notices([]);
         }
 
+    };
+
+    self.GetMembers = async function () {
+
+        var baseurl = window.location.origin;
+
+        var apiUrl = baseurl + '/messing/member/list?includeAdminsOnly=true';
+
+        var response = await getJson(apiUrl, true);
+
+        if (response && response.success && response.data) {
+            self.Members(response.data);
+        }
+        else {
+            self.Members([]);
+        }
     };
 };

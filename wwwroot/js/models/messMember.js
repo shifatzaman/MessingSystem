@@ -17,5 +17,7 @@
         self.email = ko.observable();
         self.password = ko.observable();
         self.userId = ko.observable(0);
+        self.imagePath = ko.observable();
+        self.userRole = ko.observable(1);
     }
 }

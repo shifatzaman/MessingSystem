@@ -712,3 +712,15 @@ body {
     word-break: break-word;
     white-space: pre-wrap;
 }
+
+.pro-pic{
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 50%;
+}
+
+.pro-pic-2 {
+    width: 80px !important;
+    height: 80px !important;
+    margin: 15px 0 !important;
+}

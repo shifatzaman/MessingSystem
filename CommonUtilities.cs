@@ -93,5 +93,16 @@ namespace MessingSystem
             }
         }
 
+        public static string GetFullImagePath(string fileName)
+        {
+            return string.Format("{0}Uploads/{1}", Startup.StaticConfig["siteUrl"], fileName);
+        }
+
+        public static string GetDefaultImagePath()
+        {
+            return string.Format("{0}img/placeholder-profile-pic.jpg", Startup.StaticConfig["siteUrl"]);
+        }
+
+
     }
 }
