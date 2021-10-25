@@ -183,6 +183,54 @@ namespace MessingSystem.Services
             var meals = dbContext.MemberMeals.Where(m => m.Date.Date == date.Date).ToList();
             dbContext.MemberMeals.RemoveRange(meals);
         }
+        public void AddDailyMessingTemplate(DailyMessingTemplateViewModel model)
+        {
+            var template = new DailyMessingTemplate
+            {
+                MealType = model.MealType,
+                TemplateName = model.TemplateName
+            };
+
+            dbContext.DailyMessingTemplates.Add(template);
+            dbContext.SaveChanges();
+
+            if (template.Id > 0)
+            {
+                if (model.DailyMessingTemplateItems.Any())
+                {
+                    var messingTemplateItems = model.DailyMessingTemplateItems.Select(m => new DailyMessingTemplateItem
+                    {
+                        DailyMessingTemplateId = template.Id,
+                        ItemType = m.ItemType,
+                        Quantity = m.Quantity
+                    });
+
+                    dbContext.DailyMessingTemplateItems.AddRange(messingTemplateItems);
+                    dbContext.SaveChanges();
+                }
+            }
+        }
+
+        public IList<DailyMessingTemplate> GetDailyMessingTemplates()
+        {
+            var dailyMessingTemplates = dbContext.DailyMessingTemplates.ToList();
+
+            if (dailyMessingTemplates != null)
+            {
+                var templateIdList = dailyMessingTemplates.Select(dt => dt.Id).ToList();
+
+                var templateItemList = dbContext.DailyMessingTemplateItems.Where(it => templateIdList.Contains(it.DailyMessingTemplateId))
+                                                                          .ToList();
+
+                foreach (var item in dailyMessingTemplates)
+                {
+                    item.DailyMessingTemplateItems = templateItemList.Where(it => it.DailyMessingTemplateId == item.Id).ToList();
+                }
+
+            }
+
+            return dailyMessingTemplates;
+        }
 
         public void AddDailyMessing(AddDailyMessingViewModel model)
         {

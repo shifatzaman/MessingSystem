@@ -32,6 +32,12 @@ namespace MessingSystem.Models
             CreateMap<Room, RoomViewModel>()
                    .ReverseMap();
 
+            CreateMap<DailyMessingTemplate, DailyMessingTemplateViewModel>()
+                   .ReverseMap();
+
+            CreateMap<DailyMessingTemplateItem, DailyMessingTemplateItemViewModel>()
+                   .ReverseMap();
+
             //CreateMap<MemberMeal, Membermeal>()
             //       .ReverseMap();
         }
