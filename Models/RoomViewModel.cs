@@ -18,6 +18,8 @@ namespace MessingSystem.Models
 
         public bool IsAllocated { get; set; }
 
+        public DateTime? DateOfEntry { get; set; }
+
         public string RoomTypeName { 
             get {
                 if (Enum.IsDefined(typeof(RoomTypes), Type))

@@ -903,7 +903,7 @@ namespace MessingSystem.Controllers.API
         [HttpGet]
         [Authorize]
         [Route("rooms")]
-        public ResponseModel GetRooms(bool includeVacantRoomsOnly = false)
+        public ResponseModel GetRooms()
         {
             var response = new ResponseModel();
 
@@ -916,9 +916,16 @@ namespace MessingSystem.Controllers.API
             {
                 if (User != null && User.Identity != null)
                 {
-                    var rooms = _messingService.GetRooms(includeVacantRoomsOnly);
+                    var rooms = _messingService.GetRooms();
                     var roomVMs = _mapper.Map<IList<Room>, IList<RoomViewModel>>(rooms);
-                    return response.CreateSuccessRespone(roomVMs, "Room list generated");
+                    var roomStatisticVM = new RoomStatisticsViewModel(rooms);
+                    var data = new
+                    {
+                        roomStats = roomStatisticVM,
+                        rooms = roomVMs
+                    };
+
+                    return response.CreateSuccessRespone(data, "Room list generated");
                 }
                 else
                 {
@@ -991,6 +998,7 @@ namespace MessingSystem.Controllers.API
                         if (!room.IsAllocated)
                         {
                             room.AllocatedTo = string.Empty;
+                            room.DateOfEntry = null;
                         }
 
                         _messingService.UpdateRoom(room);
@@ -1000,6 +1008,7 @@ namespace MessingSystem.Controllers.API
                         if (!room.IsAllocated)
                         {
                             room.AllocatedTo = string.Empty;
+                            room.DateOfEntry = null;
                         }
 
                         _messingService.SaveRoom(room);
