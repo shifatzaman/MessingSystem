@@ -422,7 +422,7 @@ namespace MessingSystem.Controllers.API
                 if (User != null && User.Identity != null)
                 {
                     _messingService.AddDailyMessing(model);
-                    response.Message = "Daily messing added successfully";
+                    return response.CreateSuccessRespone(null, "Daily messing added successfully");
                 }
                 else
                 {
@@ -455,7 +455,7 @@ namespace MessingSystem.Controllers.API
                 if (User != null && User.Identity != null)
                 {
                     _messingService.AddDailyMessingTemplate(model);
-                    response.Message = "Daily messing added successfully";
+                    return response.CreateSuccessRespone(null, "Template Saved Successfully");
                 }
                 else
                 {

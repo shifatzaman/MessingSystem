@@ -3,6 +3,8 @@
     //Get
     self.SelDate = ko.observable(new Date());
     self.DailyMessings = ko.observableArray([]);
+    self.MessingTemplates = ko.observableArray([]);
+    self.SelMessingTemplateId = ko.observable('');
 
     //Add
     self.SelDailyMessing = ko.observable(new DailyMessing());
@@ -24,6 +26,22 @@
         }
         else {
             self.InventoryItemTypes([]);
+        }
+    };
+
+    self.GetDailyMessingTemplates = async function () {
+
+        var baseurl = window.location.origin;
+
+        var apiUrl = baseurl + '/messing/template';
+
+        var response = await getJson(apiUrl, true);
+
+        if (response && response.success && response.data) {
+            self.MessingTemplates(response.data);
+        }
+        else {
+            self.MessingTemplates([]);
         }
     };
 
@@ -86,36 +104,96 @@
     }
 
     self.SaveTemplateClicked = function () {
-
+        $('#template').modal('show');
     }
 
 
     self.CopyDailyMessingToTemplate = function () {
+        var messingData = ko.toJS(self.SelDailyMessing());
+
+        if (messingData) {
+            var templateData = {};
+            templateData.mealType = messingData.mealType;
+            templateData.templateName = self.TemplateName();
+
+            if (messingData.dailyMessingItems.length > 0) {
+                var templateItems = [];
+                ko.utils.arrayForEach(messingData.dailyMessingItems, function (item) {
+                    var templateItem = {
+                        itemType : item.itemType,
+                        quantity : item.quantity
+                    };
+
+                    templateItems.push(templateItem);
+                });
+
+                templateData.dailyMessingTemplateItems = templateItems;
+            }
+
+            return templateData;
+        }
+
+        return null;
 
     }
 
-    self.SaveTemplateConfirmed = async function () {
+    self.SaveTemplateConfirmed = async function (formElement) {
+
+        if (!$(formElement).valid())
+            return;
+
         showSpinner();
-        var messingData = ko.toJS(self.SelDailyMessing());
-        messingData.t
+        var messingTemplateData = self.CopyDailyMessingToTemplate();
 
-        var apiUrl = baseurl + '/messing/daily/add';
+        var apiUrl = getBaseUrl() + '/messing/template';
 
-        var response = await postJson(apiUrl, true, messingData);
+        var response = await postJson(apiUrl, true, messingTemplateData);
 
         if (response && response.success) {
+            self.TemplateName('');
+            self.GetDailyMessingTemplates();
             showNotificationModal(response.message);
-            self.SelDailyMessing(new DailyMessing());
             hideSpinner();
         }
         else {
             if (response.message) {
                 showNotificationModal(response.message);
-                self.SelDailyMessing(new DailyMessing());
             }
             hideSpinner();
         }
     }
+
+    self.SetTempplateAsDailyMessing = function (templateId) {
+        var matchedTemplate = ko.utils.arrayFirst(self.MessingTemplates(), function (item) {
+            return item.id == templateId;
+        });
+
+        if (matchedTemplate) {
+            var messingData = new DailyMessing();
+            messingData.mealType(matchedTemplate.mealType);
+
+            if (matchedTemplate.dailyMessingTemplateItems.length > 0) {
+                var dailyMessingItems = [];
+                ko.utils.arrayForEach(matchedTemplate.dailyMessingTemplateItems, function (item) {
+                    var messingItem = new DailyMessingItem();
+                    messingItem.itemType(item.itemType);
+                    messingItem.quantity(item.quantity);
+                    self.InventoryTypeChanged(messingItem);
+                    dailyMessingItems.push(messingItem);
+                });
+
+                messingData.dailyMessingItems(dailyMessingItems);
+            }
+
+            self.SelDailyMessing(messingData);
+        }
+    };
+
+    self.SelMessingTemplateId.subscribe(function (templateId) {
+        if (templateId) {
+            self.SetTempplateAsDailyMessing(templateId);
+        }
+    });
 
     self.AddMoreItemClicked = function () {
         if (self.SelDailyMessing && self.SelDailyMessing() && self.SelDailyMessing().dailyMessingItems) {
@@ -182,6 +260,7 @@
     }
 
     $('#dailymessing-form').validate(dailyMessingValidationRules);
+    $('#template-form').validate(templateValidationRules);
 }
 
 var dailyMessingValidationRules = {
@@ -199,6 +278,19 @@ var dailyMessingValidationRules = {
         },
         mealType: {
             required: "Please select type of meal"
+        }
+    }
+};
+
+var templateValidationRules = {
+    rules: {
+        templateName: {
+            required: true
+        }
+    },
+    messages: {
+        templateName: {
+            required: "Please enter template name"
         }
     }
 };
