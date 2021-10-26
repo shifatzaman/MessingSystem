@@ -39,8 +39,8 @@
                                 <td data-bind="text: item"></td>
                                 <td data-bind="text: price"></td>
                                 <td>
-                                    <a data-bind="click: $root.EditUtilityBill" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit</a>
-                                    <a data-bind="click: $root.DeleteUtilityBill" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                    <a data-bind="click: $root.EditUtilityBill" class="btn btn-green text-white small-btn" aria-expanded="false"><i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit</a>
+                                    <a data-bind="click: $root.DeleteUtilityBill" class="btn btn-danger text-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -84,7 +84,7 @@
                         <!-- /ko -->
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="submit" class="btn btn-success text-white">Save</button>
                         <button type="button" class="btn btn-danger" style="color: #fff !important;" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
@@ -110,6 +110,7 @@
     <script type="text/javascript">
         loggedInUserGuard();
         $(document).ready(function () {
+            setSideBarMenuActive(pageTypes.utilitybill);
             var viewModel = new UtilityBillViewModel();
             ko.applyBindings(viewModel, document.getElementById('utility-bill'));
             viewModel.GetUtilityBills();

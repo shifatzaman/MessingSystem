@@ -1,9 +1,9 @@
 ﻿function MealsViewModel() {
     var self = this;
     self.MealsByDate = ko.observableArray([]);
-    self.SelDate = ko.observable(new Date());
+    self.SelDate = ko.observable(moment(new Date()).format('yyyy-MM-DD'));
     self.MemberStatusOptions = ko.observableArray(memberStatusOptions);
-
+    self.MemberMealsLoaded = ko.observable(false);
 
     self.GetMeals = async function () {
 
@@ -27,10 +27,12 @@
             }
 
             self.MealsByDate(arr);
+            self.MemberMealsLoaded(true);
             hideSpinner();
         }
         else {
             self.MealsByDate([]);
+            self.MemberMealsLoaded(true);
             hideSpinner();
         }
     };

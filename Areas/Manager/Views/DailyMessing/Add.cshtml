@@ -6,7 +6,7 @@
 <div class="page-breadcrumb bg-white">
     <div class="row align-items-center">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-            <h4 class="page-title">Add Daily Messing</h4>
+            <h4 class="page-title">Daily Messings / Add </h4>
         </div>
     </div>
     <!-- /.col-lg-12 -->
@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                             <div>
-                                <button class="btn btn-primary mb-5" data-bind="click: $root.AddMoreItemClicked, visible: $index() == ($parent.dailyMessingItems().length - 1)">Add More Item</button>
+                                <button class="btn btn-green text-white mb-5" data-bind="click: $root.AddMoreItemClicked, visible: $index() == ($parent.dailyMessingItems().length - 1)">Add More Item</button>
                                 <button class="btn btn-danger mb-5 text-white" data-bind="click: $root.RemoveItemClicked, visible: $parent.dailyMessingItems().length > 1">Remove Item</button>
                             </div>
                             <!-- /ko -->
@@ -65,8 +65,8 @@
                         <!-- /ko -->
                         <div class="form-group mb-4">
                             <div>
-                                <button type="submit" class="btn btn-success">Save Daily Messing</button>
-                                <button data-bind="click: $root.SaveTemplateClicked" class="btn btn-blue text-white">Save Template</button>
+                                <button type="submit" class="btn btn-primary">Save Daily Messing</button>
+                                <button data-bind="click: $root.SaveTemplateClicked" class="btn btn-secondary text-white">Save Template</button>
                             </div>
                         </div>
                     </form>
@@ -93,7 +93,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success text-white">Save</button>
+                        <button type="submit" class="btn btn-primary text-white">Save</button>
                         <button type="button" class="btn btn-danger" style="color: #fff !important;" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
@@ -119,6 +119,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            setSideBarMenuActive(pageTypes.dailymessing);
             var viewmodel = new DailyMessingViewModel();
             ko.applyBindings(viewmodel, document.getElementById('dailymessing-add'));
             viewmodel.GetInventoryItemTypes();

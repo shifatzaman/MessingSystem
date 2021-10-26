@@ -47,4 +47,8 @@
         event.stopPropagation();
         $('#notification-dropdown').show();
     }
+
+    self.UpdateLoggedInStatus = async function () {
+
+    }
 }

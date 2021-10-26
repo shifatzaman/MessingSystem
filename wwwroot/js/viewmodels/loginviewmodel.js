@@ -6,14 +6,13 @@
     self.Login = async function (formElement) {
         if (!$(formElement).valid()) return;
 
-        var baseurl = window.location.origin;
         var loginData = {
             email: self.Email(),
             password: self.Password()
 
         };
 
-        var apiUrl = 'https://localhost:44388/account/login';
+        var apiUrl = getBaseUrl() + '/account/login';
 
 
         var response = await postJson(apiUrl, false, loginData);

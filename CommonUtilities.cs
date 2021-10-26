@@ -1,5 +1,6 @@
 ﻿using MessingSystem.Domain;
 using MessingSystem.Enums;
+using MessingSystem.Models;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace MessingSystem
             }
         }
 
-        public static string GenereateJsonWebToken(User user)
+        public static TokenData GenereateJsonWebToken(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Startup.StaticConfig["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -38,12 +39,16 @@ namespace MessingSystem
                 issuer: Startup.StaticConfig["Jwt:Issuer"],
                 audience: Startup.StaticConfig["Jwt:Issuer"],
                 claims,
-                expires: DateTime.Now.AddHours(24),
+                expires: DateTime.UtcNow.AddHours(24),
                 signingCredentials: credentials
             );
 
             var encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
-            return encodedToken;
+            return new TokenData
+            {
+                Token = encodedToken,
+                Validity = token.ValidTo
+            };
         }
 
         public static bool VerifyPassword(string password, byte[] passwordHash, byte[] passwordSalt)

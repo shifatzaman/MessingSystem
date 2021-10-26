@@ -86,6 +86,22 @@ function hideSpinner() {
     $('#loaderSpinner').hide();
 }
 
+var pageTypes = {
+    dashboard : 1,
+    accomodation : 2,
+    mealinout : 3,
+    dailymessing : 4,
+    storeandbazar : 5,
+    messmembers : 6,
+    accounts : 7,
+    settings: 8,
+    monthlybill: 9,
+    extramessing: 10,
+    cafebill: 11,
+    utilitybill: 12,
+    notices: 13
+};
+
 function showNotificationModal(message) {
     try {
         $('#noti-modal-text').text(message);
@@ -214,4 +230,57 @@ function redirectToMontlyBillForMember() {
     if (user && user.memberId) {
         redirect(getBaseUrl() + '/Member/Meals/MonthlyBill?memberid=' + user.memberId);
     }
-}
+};
+
+function setSideBarMenuActive(pagetype) {
+    $('.sidebar-link').removeClass('active'); 
+
+    switch (pagetype) {
+        case pageTypes.dashboard:
+            $('#dashboard-sidebar').addClass('active');
+            break;
+        case pageTypes.accomodation:
+            $('#accomodation-sidebar').addClass('active');
+            break;
+        case pageTypes.mealinout:
+            $('#meals-sidebar').addClass('active');
+            break;
+        case pageTypes.dailymessing:
+            $('#dailymessing-sidebar').addClass('active');
+            break;
+        case pageTypes.storeandbazar:
+            $('#storeandbazar-sidebar').addClass('active');
+            break;
+        case pageTypes.messmembers:
+            $('#messmembers-sidebar').addClass('active');
+            break;
+        case pageTypes.accounts:
+            $('#submenu1').addClass('show');
+            break;
+        case pageTypes.monthlybill:
+            $('#submenu1').addClass('show');
+            $('#montlybill-submenu').addClass('active');
+            break;
+        case pageTypes.extramessing:
+            $('#submenu1').addClass('show');
+            $('#extramessing-submenu').addClass('active');
+            break;
+        case pageTypes.cafebill:
+            $('#submenu1').addClass('show');
+            $('#cafebill-submenu').addClass('active');
+            break;
+        case pageTypes.utilitybill:
+            $('#submenu1').addClass('show');
+            $('#utilitybill-submenu').addClass('active');
+            break;
+        case pageTypes.notices:
+            $('#submenu2').addClass('show');
+            $('#notices-submenu').addClass('active');
+            break;
+        case pageTypes.settings:
+            $('#settings-sidebar').addClass('active');
+            break;
+        default:
+            $('#dashboard-sidebar').addClass('active');
+    }
+};

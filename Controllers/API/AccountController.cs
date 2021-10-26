@@ -47,7 +47,7 @@ namespace MessingSystem.Controllers.API
                 {
                     if (CommonUtilities.VerifyPassword(model.Password, existingUser.PasswordHash, existingUser.PasswordSalt))
                     {
-                        var token = CommonUtilities.GenereateJsonWebToken(existingUser);
+                        var tokenData = CommonUtilities.GenereateJsonWebToken(existingUser);
                         int memberId = 0;
                         string redirectUrl = "/Manager/Dashboard";
 
@@ -57,11 +57,11 @@ namespace MessingSystem.Controllers.API
                             redirectUrl = "/Member/Dashboard";
                         }
 
-                        if (!string.IsNullOrEmpty(token))
+                        if (tokenData != null)
                         {
                             var data = new
                             {
-                                token = token,
+                                tokenData = tokenData,
                                 redirectUrl = redirectUrl,
                                 userdata = new
                                 {
@@ -98,6 +98,5 @@ namespace MessingSystem.Controllers.API
 
             return response;
         }
-
     }
 }

@@ -1,273 +1,276 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MessingSystem</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css"  asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/login.css" />
-    <link rel="stylesheet" href="~/css/style.min.css" asp-append-version="true">
-</head>
-<body>
-    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
-         data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+﻿    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - MessingSystem</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css"  asp-append-version="true"/>
+        <link rel="stylesheet" href="~/css/login.css" />
+        <link rel="stylesheet" href="~/css/style.min.css" asp-append-version="true">
+    </head>
+    <body>
+        <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+             data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
 
-        <header class="topbar" data-navbarbg="skin5">
-            <nav class="navbar top-navbar navbar-expand-md navbar-dark wrapper" id="layout-nav">
-                <div class="navbar-header" data-logobg="skin6">
-                    <a class="navbar-brand">
-                        <!--End Logo icon -->
-                        <!-- Logo text -->
-                        <span class="logo-text">
-                            <!-- dark Logo text -->
-                            Messing System
-                        </span>
-                    </a>
-                    <a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
-                       href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
-                </div>
-                <div class="navbar-collapse collapse nav-bar" id="navbarSupportedContent" data-navbarbg="skin5">
-
-                    <ul class="navbar-nav ms-auto d-flex align-items-center">
-                        <li id="notification-bell-container">
-                            <div class="dropdowns-wrapper">
-                                <div class="dropdown-container">
-                                    <div class="notifications dropdown dd-trigger" id="noti-bell"  data-bind="click: NotificationBellClicked">
-                                        <span class="count animated" id="notifications-count" data-bind="visible: UnseenCount && UnseenCount() > 0, text: UnseenCount"></span>
-                                        <span class="fa fa-bell" id="notifications-bell-icon" style="color:white"></span>
-                                    </div>
-                                    <div class="dropdown-menu animated" id="notification-dropdown">
-                                        <div class="dropdown-header">
-                                            <span class="triangle"></span>
-                                            <span class="heading">Notifications</span>
-                                            <span class="count" id="dd-notifications-count" data-bind="visible: UnseenCount && UnseenCount() > 0, text: UnseenCount"></span>
+            <header class="topbar" data-navbarbg="skin5">
+                <nav class="navbar top-navbar navbar-expand-md navbar-dark wrapper" id="layout-nav">
+                    <div class="navbar-collapse nav-bar" id="navbarSupportedContent" data-navbarbg="skin5">
+                        <a class="sidebar-expander" onclick="openNav()"><i class="ti-menu ti-close"></i></a>
+                        <div class="messing-brand">
+                            <h4>SIGNAL OFFICER'S MESS MANAGEMENT SYSTEM</h4>
+                        </div>
+                        <ul class="navbar-nav ms-auto d-flex align-items-center">
+                            <li id="notification-bell-container">
+                                <div class="dropdowns-wrapper">
+                                    <div class="dropdown-container">
+                                        <div class="notifications dropdown dd-trigger" id="noti-bell" data-bind="click: NotificationBellClicked">
+                                            <span class="count animated" id="notifications-count" data-bind="visible: UnseenCount && UnseenCount() > 0, text: UnseenCount"></span>
+                                            <span class="fa fa-bell" id="notifications-bell-icon" style="color:white"></span>
                                         </div>
-                                        <div class="dropdown-body">
-                                            <!-- ko foreach: Notifications-->
-                                            <div class="notification" data-bind="css : {new : !seen}">
-                                                <a data-bind="click: $parent.NotificationClicked">
-                                                    <div class="notification-image-wrapper">
-                                                        <div class="notification-image">
-                                                            <img src="~/img/placeholder-profile-pic.jpg" alt="" width="32">
-                                                        </div>
-                                                    </div>
-                                                    <div class="notification-text">
-                                                        <span class="highlight" data-bind="text: message"></span>
-                                                    </div>
-                                                </a>  
+                                        <div class="dropdown-menu animated" id="notification-dropdown">
+                                            <div class="dropdown-header">
+                                                <span class="triangle"></span>
+                                                <span class="heading">Notifications</span>
+                                                <span class="count" id="dd-notifications-count" data-bind="visible: UnseenCount && UnseenCount() > 0, text: UnseenCount"></span>
                                             </div>
-                                            <!-- /ko -->
+                                            <div class="dropdown-body">
+                                                <!-- ko foreach: Notifications-->
+                                                <div class="notification" data-bind="css : {new : !seen}">
+                                                    <a data-bind="click: $parent.NotificationClicked">
+                                                        <div class="notification-image-wrapper">
+                                                            <div class="notification-image">
+                                                                <img src="~/img/placeholder-profile-pic.jpg" alt="" width="32">
+                                                            </div>
+                                                        </div>
+                                                        <div class="notification-text">
+                                                            <span class="highlight" data-bind="text: message"></span>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <!-- /ko -->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="dropdown" style="margin-right: 10px; cursor:pointer;">
-                            <a class="profile-pic dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span id="username-upper"></span> <i class=" fas fa-angle-down" aria-hidden="true"></i>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" onclick="logout()">Logout <i class="fas fa-sign-out-alt" aria-hidden="true"></i></a>
-                            </div>
-                        </li>
-                        
-
-                    </ul>
-                </div>
-            </nav>
-        </header>
-        <aside class="left-sidebar" data-sidebarbg="skin6">
-            <!-- Sidebar scroll-->
-            <div class="scroll-sidebar">
-                <!-- Sidebar navigation-->
-                <nav class="sidebar-nav">
-                    <ul id="sidebarnav">
-                        <!-- User Profile-->
-                        <li class="sidebar-item pt-2">
-                            <a href="/Manager/Dashboard" class="sidebar-link waves-effect waves-dark sidebar-link"
-                               aria-expanded="false">
-                                <i class="far fa-clock" aria-hidden="true"></i>
-                                <span class="hide-menu">Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                               aria-expanded="false" href="/Manager/Bazar">
-                                <i class="fa fa-table" aria-hidden="true"></i>
-                                <span class="hide-menu">Store & Bazar</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                               aria-expanded="false" href="/Manager/DailyMessing">
-                                <i class="fa fa-flag-checkered" aria-hidden="true"></i>
-                                <span class="hide-menu">Daily Messings</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                               aria-expanded="false" href="/Manager/MessMember">
-                                <i class="fa fa-list" aria-hidden="true"></i>
-                                <span class="hide-menu">Mess Members</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                               aria-expanded="false" href="/Manager/MessMember/Meals">
-                                <i class="fa fa-user-times" aria-hidden="true"></i>
-                                <span class="hide-menu">Meal in/outs</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="#submenu1" data-toggle="collapse" aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link">
-                                <div class="d-flex w-100 justify-content-start align-items-center">
-                                    <i class="fa fa-money-bill-alt" aria-hidden="true"></i>
-                                    <span class="hide-menu">Accounts</span>
-                                    <i class=" fas fa-angle-down float-right" aria-hidden="true"></i>
+                            </li>
+                            <li class="dropdown" style="margin-right: 10px; cursor:pointer;">
+                                <a class="profile-pic dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span id="username-upper"></span> <i class=" fas fa-angle-down" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" onclick="logout()">Logout <i class="fas fa-sign-out-alt" aria-hidden="true"></i></a>
                                 </div>
-                            </a>
-                            <!-- Submenu content -->
-                            <div id='submenu1' class="collapse sidebar-submenu">
-                                <a href="/Manager/Accounts/MonthlyBill" class="list-group-item list-group-item-action waves-effect waves-dark sidebar-link">
-                                    <span class="menu-collapsed">Monthly Bill</span>
-                                </a>
-                                <a href="/Manager/Accounts/ExtraMessing" class="list-group-item list-group-item-action waves-effect waves-dark sidebar-link">
-                                    <span class="menu-collapsed">Extra Messing</span>
-                                </a>
-                                <a href="/Manager/Accounts/CafeteriaBill" class="list-group-item list-group-item-action waves-effect waves-dark sidebar-link">
-                                    <span class="menu-collapsed">Cafeteria Bill</span>
-                                </a>
-                                <a href="/Manager/MessMember/UtilityBills" class="list-group-item list-group-item-action waves-effect waves-dark sidebar-link">
-                                    <span class="menu-collapsed">Utility Bill</span>
-                                </a>
-                            </div>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                               aria-expanded="false" href="/Manager/MessMember/Rooms">
-                                <i class="fa fa-home" aria-hidden="true"></i>
-                                <span class="hide-menu">Rooms</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link">
-                                <div class="d-flex w-100 justify-content-start align-items-center">
-                                    <i class="fa fa-cog" aria-hidden="true"></i>
-                                    <span class="hide-menu">Settings</span>
-                                    <i class=" fas fa-angle-down float-right" aria-hidden="true"></i>
-                                </div>
-                            </a>
-                            <!-- Submenu content -->
-                            <div id='submenu2' class="collapse sidebar-submenu">
-                                <a href="/Manager/Notice" class="list-group-item list-group-item-action waves-effect waves-dark sidebar-link">
-                                    <i class="fa fa-info"></i>
-                                    <span class="menu-collapsed">Notices</span>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
+                            </li>
 
+
+                        </ul>
+                    </div>
                 </nav>
-                <!-- End Sidebar navigation -->
+            </header>
+            <aside class="left-sidebar" id="sidebar-container" data-sidebarbg="skin6">
+                <!-- Sidebar scroll-->
+                <div class="scroll-sidebar">
+                    <!-- Sidebar navigation-->
+                    <nav class="sidebar-nav">
+                        <a class="closebtn" onclick="closeNav()">×</a>
+                        <ul id="sidebarnav">
+                            <!-- User Profile-->
+                            <li class="sidebar-item pt-2 active">
+                                <a href="/Manager/Dashboard" id="dashboard-sidebar" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   aria-expanded="false">
+                                    <i class="far fa-clock" aria-hidden="true"></i>
+                                    <span class="hide-menu">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a id="accomodation-sidebar" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   aria-expanded="false" href="/Manager/MessMember/Rooms">
+                                    <i class="fa fa-home" aria-hidden="true"></i>
+                                    <span class="hide-menu">Accomodation</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a id="meals-sidebar" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   aria-expanded="false" href="/Manager/MessMember/Meals">
+                                    <i class="fa fa-user-times" aria-hidden="true"></i>
+                                    <span class="hide-menu">Meal in/outs</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a id="dailymessing-sidebar" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   aria-expanded="false" href="/Manager/DailyMessing">
+                                    <i class="fa fa-flag-checkered" aria-hidden="true"></i>
+                                    <span class="hide-menu">Daily Messings</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a id="storeandbazar-sidebar" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   aria-expanded="false" href="/Manager/Bazar">
+                                    <i class="fa fa-table" aria-hidden="true"></i>
+                                    <span class="hide-menu">Store & Bazar</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a id="messmembers-sidebar" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   aria-expanded="false" href="/Manager/MessMember">
+                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                    <span class="hide-menu">Mess Members</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a id="accounts-sidebar" href="#submenu1" data-toggle="collapse" aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link">
+                                    <div class="d-flex w-100 justify-content-start align-items-center">
+                                        <i class="fa fa-money-bill-alt" aria-hidden="true"></i>
+                                        <span class="hide-menu">Accounts</span>
+                                        <i class=" fas fa-angle-down float-right" aria-hidden="true"></i>
+                                    </div>
+                                </a>
+                                <!-- Submenu content -->
+                                <div id='submenu1' class="collapse sidebar-submenu">
+                                    <a id="montlybill-submenu" href="/Manager/Accounts/MonthlyBill" class="list-group-item list-group-item-action waves-effect waves-dark sidebar-link">
+                                        <i class="fa fa-plus"></i>
+                                        <span class="menu-collapsed">Monthly Bill</span>
+                                    </a>
+                                    <a id="extramessing-submenu" href="/Manager/Accounts/ExtraMessing" class="list-group-item list-group-item-action waves-effect waves-dark sidebar-link">
+                                        <i class="fa fa-plus"></i>
+                                        <span class="menu-collapsed">Extra Messing</span>
+                                    </a>
+                                    <a id="cafebill-submenu" href="/Manager/Accounts/CafeteriaBill" class="list-group-item list-group-item-action waves-effect waves-dark sidebar-link">
+                                        <i class="fa fa-plus"></i>
+                                        <span class="menu-collapsed">Cafeteria Bill</span>
+                                    </a>
+                                    <a id="utilitybill-submenu" href="/Manager/MessMember/UtilityBills" class="list-group-item list-group-item-action waves-effect waves-dark sidebar-link">
+                                        <i class="fa fa-plus"></i>
+                                        <span class="menu-collapsed">Utility Bill</span>
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="sidebar-item">
+                                <a id="settings-sidebar" href="#submenu2" data-toggle="collapse" aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link">
+                                    <div class="d-flex w-100 justify-content-start align-items-center">
+                                        <i class="fa fa-cog" aria-hidden="true"></i>
+                                        <span class="hide-menu">Settings</span>
+                                        <i class=" fas fa-angle-down float-right" aria-hidden="true"></i>
+                                    </div>
+                                </a>
+                                <!-- Submenu content -->
+                                <div id='submenu2' class="collapse sidebar-submenu">
+                                    <a id="notices-submenu" href="/Manager/Notice" class="list-group-item list-group-item-action waves-effect waves-dark sidebar-link">
+                                        <i class="fa fa-info-circle"></i>
+                                        <span class="menu-collapsed">Notices</span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </nav>
+                    <!-- End Sidebar navigation -->
+                </div>
+                <!-- End Sidebar scroll-->
+            </aside>
+            <div class="page-wrapper" id="page-container">
+                @RenderBody()
             </div>
-            <!-- End Sidebar scroll-->
-        </aside>
-        <div class="page-wrapper">
-            @RenderBody()
-        </div>
-        <div class="d-flex justify-content-center">
-            <div class="spinner-border custom-spinner" role="status" id="loaderSpinner" style="display:none">
-                <span class="sr-only">Loading...</span>
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border custom-spinner" role="status" id="loaderSpinner" style="display:none">
+                    <span class="sr-only">Loading...</span>
+                </div>
             </div>
-        </div>
-        <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Message</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+            <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Message</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="noti-modal-text">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" style="color: #fff !important;" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                    <div class="modal-body" id="noti-modal-text">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" style="color: #fff !important;" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+            <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-labelledby="notificationLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Message</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="conf-modal-text">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success txt-white" id="conf-modal-ok" style="color: #fff !important;" data-dismiss="modal">Ok</button>
+                            <button type="button" class="btn btn-danger txt-white" id="conf-modal-cancel" style="color: #fff !important;" data-dismiss="modal">Cancel</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-labelledby="notificationLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Message</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="conf-modal-text">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success txt-white" id="conf-modal-ok" style="color: #fff !important;" data-dismiss="modal">Ok</button>
-                        <button type="button" class="btn btn-danger txt-white" id="conf-modal-cancel" style="color: #fff !important;" data-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2021 - MessingSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             </div>
-        </div>
-    </div>
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - MessingSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
-    <script src="~/js/knockout-mapping.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/moment/moment.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/auth.js" asp-append-version="true"></script>
-    <script src="~/js/api.js" asp-append-version="true"></script>
-    <script src="~/js/models/inventoryItem.js" asp-append-version="true"></script>
-    <script src="~/js/viewmodels/inventoryviewmodel.js" asp-append-version="true"></script>
-    <script src="~/js/models/inventoryItemType.js" asp-append-version="true"></script>
-    <script src="~/js/viewmodels/layoutViewModel.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
-    <script>
-        loggedInUserGuard();
+        </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
+        <script src="~/js/knockout-mapping.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/lib/moment/moment.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/auth.js" asp-append-version="true"></script>
+        <script src="~/js/api.js" asp-append-version="true"></script>
+        <script src="~/js/models/inventoryItem.js" asp-append-version="true"></script>
+        <script src="~/js/viewmodels/inventoryviewmodel.js" asp-append-version="true"></script>
+        <script src="~/js/models/inventoryItemType.js" asp-append-version="true"></script>
+        <script src="~/js/viewmodels/layoutViewModel.js" asp-append-version="true"></script>
+        @RenderSection("Scripts", required: false)
+        <script>
+            loggedInUserGuard();
 
-        var user = getUserData();
-        if (user) {
-            var fullName = user.firstName + ' ' + (user.lastName ? user.lastName : '') ;
-            $('#username-upper').text(fullName);
-        }
+            var user = getUserData();
+            if (user) {
+                var fullName = user.firstName + ' ' + (user.lastName ? user.lastName : '') ;
+                $('#username-upper').text(fullName);
+            }
 
-        var layoutVM = new LayoutViewModel();
-        ko.applyBindings(layoutVM, document.getElementById('layout-nav'));
+            var layoutVM = new LayoutViewModel();
+            ko.applyBindings(layoutVM, document.getElementById('layout-nav'));
 
-        if (layoutVM && layoutVM.GetNotifications) {
-            layoutVM.GetNotifications();
-            setInterval(function () {
+            if (layoutVM && layoutVM.GetNotifications) {
                 layoutVM.GetNotifications();
-            }, 10000);
-        }
+                setInterval(function () {
+                    layoutVM.GetNotifications();
+                }, 10000);
+            }
 
-        window.onload = function () {
-            var divToHide = document.getElementById('notification-dropdown');
-            document.onclick = function (e) {
-                if (e.target.id !== 'notification-dropdown' && e.target.id != "noti-bell" && e.target.id != "notifications-count" && e.target.id != "notifications-bell-icon") {
-                    //element clicked wasn't the div; hide the div
-                    divToHide.style.display = 'none';
-                }
+            window.onload = function () {
+                var divToHide = document.getElementById('notification-dropdown');
+                document.onclick = function (e) {
+                    if (e.target.id !== 'notification-dropdown' && e.target.id != "noti-bell" && e.target.id != "notifications-count" && e.target.id != "notifications-bell-icon") {
+                        //element clicked wasn't the div; hide the div
+                        divToHide.style.display = 'none';
+                    }
+                };
             };
-        };
 
+            function openNav() {
+                document.getElementById("sidebar-container").style.display = "block";
+            }
 
-    </script>
-</body>
-</html>
+            function closeNav() {
+                document.getElementById("sidebar-container").style.display = "none";
+            }
+
+        </script>
+    </body>
+    </html>
 
 

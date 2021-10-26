@@ -23,13 +23,16 @@
             </div>
         </div>
         <div class="col-md-4">
-            <button type="button" class="btn btn-secondary pull-right" data-bind="click: GenerateDailyMeals">Generate</button>
+            <button type="button" class="btn btn-primary pull-right" data-bind="click: GenerateDailyMeals">Generate</button>
         </div>
     </div>
 
 
     <div class="row">
         <div class="col-sm-12">
+            <div class="white-box" data-bind="visible: MealsByDate && MealsByDate() && MealsByDate().length <= 0">
+                <h4 style="text-align: center;" data-bind="visible: !MemberMealsLoaded()">Select a date and click on generate to generate meal status for that date.</h4>
+            </div>
             <div class="white-box" data-bind="visible: MealsByDate && MealsByDate() && MealsByDate().length > 0">
                 <h3 class="box-title">Meal in/outs (<span data-bind="text: moment(SelDate()).format('MMMM Do YYYY')"></span>)</h3>
                 <div class="table-responsive">
@@ -58,8 +61,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-4">
-                    <button type="button" class="btn btn-secondary pull-right" data-bind="click: UpdateMeals">Update</button>
+                <div>
+                    <button type="button" class="btn btn-primary " data-bind="click: UpdateMeals">Update</button>
                 </div>
 
             </div>
@@ -80,6 +83,7 @@
     </environment>
 
     <script type="text/javascript">
+        setSideBarMenuActive(pageTypes.mealinout);
         loggedInUserGuard();
         $(document).ready(function () {
             var viewModel = new MealsViewModel();
