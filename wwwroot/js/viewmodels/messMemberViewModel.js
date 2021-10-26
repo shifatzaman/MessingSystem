@@ -160,12 +160,49 @@ var memberValidationRules = {
     rules: {
         name: {
             required: true
-        }
+        },
+        bnumb: {
+            required: true
+        },
+        rank: {
+            required: true
+        },
+
+        memberStatus: {
+            required: true
+        },
+
+        userRole: {
+            required: true
+        },
+
+        email: {
+            required: true
+        },
+
     },
     messages: {
         name: {
-            required: "Please enter name"
-        }
+            required: "Please enter member's name"
+        },
+        bnumb: {
+            required: "Please enter member's BA No"
+        },
+        rank: {
+            required: "Please enter member's rank"
+        },
+
+        memberStatus: {
+            required: "Please enter member's status"
+        },
+
+        userRole: {
+            required: "Please enter member's role"
+        },
+
+        email: {
+            required: "Please enter member's email"
+        },
     }
 };
 

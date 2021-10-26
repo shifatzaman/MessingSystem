@@ -6,7 +6,7 @@
 <div class="page-breadcrumb bg-white">
     <div class="row align-items-center">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-            <h4 class="page-title">Mean In/Out</h4>
+            <h4 class="page-title">Meal In/Out</h4>
         </div>
     </div>
     <!-- /.col-lg-12 -->
@@ -23,13 +23,17 @@
             </div>
         </div>
         <div class="col-md-4">
-            <button type="button" class="btn btn-secondary pull-right" data-bind="click: GenerateDailyMeals">Generate</button>
+            <button type="button" class="btn btn-primary pull-right" data-bind="click: GenerateDailyMeals">Generate</button>
         </div>
     </div>
 
 
     <div class="row">
         <div class="col-sm-12">
+            <div class="white-box" data-bind="visible: MealsByDate && MealsByDate() && MealsByDate().length <= 0">
+                <h4 style="text-align: center;" data-bind="visible: !MemberMealsLoaded()">Select a date and click on generate to generate meal status for that date.</h4>
+            </div>
+
             <div class="white-box" data-bind="visible: MealsByDate && MealsByDate() && MealsByDate().length > 0">
                 <h3 class="box-title">Meal in/outs (<span data-bind="text: moment(SelDate()).format('MMMM Do YYYY')"></span>)</h3>
                 <div class="table-responsive">
@@ -58,8 +62,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-4">
-                    <button type="button" class="btn btn-secondary pull-right" data-bind="click: UpdateMeals">Update</button>
+                <div >
+                    <button type="button" class="btn btn-primary " data-bind="click: UpdateMeals">Update</button>
                 </div>
 
             </div>
@@ -82,6 +86,7 @@
     <script type="text/javascript">
         loggedInUserGuard();
         $(document).ready(function () {
+            setSideBarMenuActive(pageTypes.mealinout);
             var viewModel = new MealsViewModel();
             ko.applyBindings(viewModel, document.getElementById('member-meals'));
         });

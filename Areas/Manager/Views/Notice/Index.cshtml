@@ -41,8 +41,8 @@
                                 <td data-bind="text: message" style="width: 20% !important; word-break: break-word;white-space: pre-wrap;"></td>
                                 <td data-bind="text: isVisible && isVisible() ? 'Yes' : 'No'"></td>
                                 <td>
-                                    <a data-bind="click: $root.EditNotice" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a>
-                                    <a data-bind="click: $root.DeleteNotice" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                    <a data-bind="click: $root.EditNotice" class="btn btn-green text-white small-btn" aria-expanded="false"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a>
+                                    <a data-bind="click: $root.DeleteNotice" class="btn btn-danger text-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -91,7 +91,7 @@
                         <!-- /ko -->
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="submit" class="btn btn-success text-white">Save</button>
                         <button type="button" class="btn btn-danger" style="color: #fff !important;" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
@@ -117,6 +117,7 @@
     <script type="text/javascript">
         loggedInUserGuard();
         $(document).ready(function () {
+            setSideBarMenuActive(pageTypes.notices);
             var viewModel = new NoticeViewModel();
             ko.applyBindings(viewModel, document.getElementById('notice'));
             viewModel.GetNotices();

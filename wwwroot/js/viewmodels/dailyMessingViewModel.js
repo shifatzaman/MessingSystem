@@ -1,10 +1,11 @@
 ﻿function DailyMessingViewModel() {
     var self = this;
     //Get
-    self.SelDate = ko.observable(new Date());
+    self.SelDate = ko.observable(moment(new Date()).format('yyyy-MM-DD'));
     self.DailyMessings = ko.observableArray([]);
     self.MessingTemplates = ko.observableArray([]);
     self.SelMessingTemplateId = ko.observable('');
+    self.DailyMessingLoaded = ko.observable(false);
 
     //Add
     self.SelDailyMessing = ko.observable(new DailyMessing());
@@ -97,7 +98,6 @@
         else {
             if (response.message) {
                 showNotificationModal(response.message);
-                self.SelDailyMessing(new DailyMessing());
             }
             hideSpinner();
         }
@@ -244,10 +244,12 @@
             }
 
             self.DailyMessings(arr);
+            self.DailyMessingLoaded(true);
             hideSpinner();
         }
         else {
             self.DailyMessings([]);
+            self.DailyMessingLoaded(true);
             hideSpinner();
         }
     };

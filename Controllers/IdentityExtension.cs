@@ -11,11 +11,19 @@ namespace MessingSystem.Controllers
     {
         public static string GetId(this IIdentity identity)
         {
-            ClaimsIdentity claimsIdentity = identity as ClaimsIdentity;
+            try
+            {
+                ClaimsIdentity claimsIdentity = identity as ClaimsIdentity;
 
-            Claim claim = claimsIdentity.FindFirst(ClaimTypes.Sid);
+                Claim claim = claimsIdentity.FindFirst(ClaimTypes.Sid);
 
-            return claim.Value;
+                return claim.Value;
+            }
+            catch (Exception ex)
+            {
+
+                return "0";
+            }
         }
     }
 }

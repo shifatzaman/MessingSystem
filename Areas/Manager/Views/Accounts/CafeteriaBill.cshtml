@@ -18,9 +18,7 @@
     <!-- ============================================================== -->
     <div class="row">
         <div class="col-sm-12">
-            <button type="button" class="btn btn-primary pull-right" style="float:right;" data-bind="click: AddNewMemberClicked">Add New Mess Member</button>
             <div class="white-box">
-                <h3 class="box-title">Members</h3>
                 <div class="table-responsive">
                     <table class="table text-nowrap">
                         <thead>
@@ -41,7 +39,7 @@
                                 <td data-bind="text: rank"></td>
                                 <td data-bind="text: moment(dateOfEntry).format('MMMM Do YYYY')"></td>
                                 <td>
-                                    <a data-bind="click: $root.GoToCafeteriaBill" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-plus" aria-hidden="true"></i> Add Cafeterial Bill</a><br />
+                                    <a data-bind="click: $root.GoToCafeteriaBill" class="btn btn-green text-white small-btn" aria-expanded="false"><i class="fa fa-plus" aria-hidden="true"></i> Add Cafeteria Bill</a><br />
                                 </td>
                             </tr>
                         </tbody>
@@ -66,6 +64,7 @@
     <script type="text/javascript">
         loggedInUserGuard();
         $(document).ready(function () {
+            setSideBarMenuActive(pageTypes.cafebill);
             var messMemberVM = new MessMemberViewModel();
             ko.applyBindings(messMemberVM, document.getElementById('member-index'));
             messMemberVM.GetMessMembers();

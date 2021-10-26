@@ -131,6 +131,51 @@ body {
     }
 }
 
+.sidebar-expander{
+    display: none;
+    color: white !important;
+    padding: 15px;
+    cursor: pointer !important;
+}
+
+.left-sidebar .closebtn {
+    display: none;
+    float: right;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-right: 15px;
+    cursor: pointer;
+
+}
+
+    .sidebar-expander:hover, .sidebar-expander:active{
+        color: white !important;
+    }
+
+    @media (max-width: 980px) {
+    .left-sidebar, #sidebar-container {
+        display: none;
+    }
+
+        #sidebarnav{
+            clear: both !important;
+        }
+
+        #page-container, #main-wrapper[data-layout=vertical][data-sidebartype=full] .page-wrapper {
+            margin-left: 0 !important;
+        }
+
+    .sidebar-expander {
+        display: block;
+        
+    }
+
+        .left-sidebar .closebtn {
+            display: block !important;
+        }
+}
+
 .error {
     color: red !important;
 }
@@ -146,6 +191,11 @@ body {
 .btn-blue {
     background-color: #0074d9 !important;
     border-color: #0074d9 !important;
+}
+
+.btn-green {
+    background-color: #0aa03b !important;
+    border-color: #0aa03b !important;
 }
 
 
@@ -724,3 +774,36 @@ body {
     height: 80px !important;
     margin: 15px 0 !important;
 }
+
+.brand-container{
+    margin: 0 20px !important;
+}
+
+.messing-brand {
+    margin-left: 25px;
+    color: #fff;
+}
+.messing-brand img{
+    float: left !important;
+}
+
+.float-my-children > * {
+    float: left;
+    margin-right: 5px;
+}
+
+/* this is called a clearfix. it makes sure that the container's children floats are cleared, without using extra markup */
+
+.clearfix {
+    *zoom: 1 /* for IE */
+}
+
+    .clearfix:before,
+    .clearfix:after {
+        content: " ";
+        display: table;
+    }
+
+    .clearfix:after {
+        clear: both;
+    }

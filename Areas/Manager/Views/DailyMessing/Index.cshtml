@@ -23,15 +23,19 @@
             </div>
         </div>
         <div class="col-md-4">
-            <button type="button" class="btn btn-secondary pull-right" data-bind="click: GetDailyMessings">Generate</button>
+            <button type="button" class="btn btn-green text-white pull-right" data-bind="click: GetDailyMessings">Generate</button>
         </div>
         <div class="col-md-4">
-            <button type="button" class="btn btn-secondary pull-right" style="float:right" data-bind="click: AddDailyMessingBtnClicked">Add Daily Messing</button>
+            <button type="button" class="btn btn-primary pull-right" style="float:right" data-bind="click: AddDailyMessingBtnClicked">Add Daily Messing</button>
         </div>
     </div>
 
     <div class="row">
         <div class="col-sm-12">
+            <div class="white-box" data-bind="visible: DailyMessings && DailyMessings() && DailyMessings().length <= 0">
+                <h4 style="text-align: center;" data-bind="visible: !DailyMessingLoaded()">Select a date and click on generate to get daily messing info for that date.</h4>
+                <h4 style="text-align: center;" data-bind="visible: DailyMessingLoaded()">Daily messing hasn't been added for the selected date. Click on 'Add Daily Messing' to add one.</h4>
+            </div>
             <div class="white-box" data-bind="visible: DailyMessings && DailyMessings() && DailyMessings().length > 0">
                 <h3 class="box-title">Daily Messings (<span data-bind="text: moment(SelDate()).format('MMMM Do YYYY')"></span>)</h3>
                 <div class="table-responsive">
@@ -107,6 +111,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            setSideBarMenuActive(pageTypes.dailymessing);
             var viewmodel = new DailyMessingViewModel();
             ko.applyBindings(viewmodel, document.getElementById('dailymessing-index'));
             viewmodel.GetInventoryItemTypes();

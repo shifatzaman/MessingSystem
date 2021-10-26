@@ -6,7 +6,7 @@
 <div class="page-breadcrumb bg-white">
     <div class="row align-items-center">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-            <h4 class="page-title">Mess Members</h4>
+            <h4 class="page-title">Dashboard / Mess Members</h4>
         </div>
     </div>
     <!-- /.col-lg-12 -->
@@ -31,7 +31,7 @@
                                 </button>
                                 <span data-bind="text: name"></span>
                                 <div class="collapse-action-btn">
-                                    <a data-bind="click: $root.EditMember" class="btn btn-blue small-btn pull-right" aria-expanded="false"><i class="fa fa-edit" aria-hidden="true"></i> Edit Member</a>
+                                    <a data-bind="click: $root.EditMember" class="btn btn-green text-white small-btn pull-right" aria-expanded="false"><i class="fa fa-edit" aria-hidden="true"></i> Edit Member</a>
                                     <a data-bind="click: $root.DeleteMember" class="btn btn-danger small-btn pull-right" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete Member</a>
                                 </div>
                                 
@@ -112,6 +112,7 @@
     <script type="text/javascript">
         loggedInUserGuard();
         $(document).ready(function () {
+            setSideBarMenuActive(pageTypes.messmembers);
             var messMemberVM = new MessMemberViewModel();
             ko.applyBindings(messMemberVM, document.getElementById('member-index'));
             messMemberVM.GetMessMembers();

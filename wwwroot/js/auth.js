@@ -12,11 +12,16 @@ function storeTokenData(data) {
 function getTokenData() {
     let storedData = getStoredData();
 
-    if (storedData && storedData.token) {
-        return storedData.token;
+    if (storedData && storedData.tokenData && storedData.tokenData.token
+        && storedData.tokenData.validity) {
+        if (moment().utc().format() <= storedData.tokenData.validity) {
+            return storedData.tokenData.token;
+        }
+        else
+            return false;
     }
 
-    return null;
+    return false;;
 }
 
 function getUserData() {
@@ -36,9 +41,7 @@ function logout() {
 
 function loggedInUserGuard() {
     if (!getTokenData()) {
-        var baseurl = window.location.origin;
-        var redirectUrl = baseurl;
-        redirect(redirectUrl);
+        logout();
     }
 }
 

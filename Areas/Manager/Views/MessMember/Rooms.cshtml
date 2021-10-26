@@ -6,7 +6,7 @@
 <div class="page-breadcrumb bg-white">
     <div class="row align-items-center">
         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-            <h4 class="page-title">Rooms</h4>
+            <h4 class="page-title">Dashboard / Accomodation</h4>
         </div>
     </div>
     <!-- /.col-lg-12 -->
@@ -71,9 +71,14 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <button type="button" class="btn btn-primary pull-right" style="float:right;" data-bind="click: AddRoom">Add</button>
             <div class="white-box">
-                <h3 class="box-title">Rooms</h3>
+                <button type="button" class="btn btn-primary pull-right" style="float:right;" data-bind="click: AddRoom">Add</button>
+                <!-- ko if : Rooms && Rooms().length <= 0 -->
+                <h4 style="padding: 50px; text-align:center;">
+                    No room added yet.
+                </h4>
+                <!-- /ko -->
+                <!-- ko if : Rooms && Rooms().length > 0 -->
                 <div class="table-responsive">
                     <table class="table text-nowrap">
                         <thead>
@@ -96,13 +101,14 @@
                                 <td data-bind="text: availability"></td>
                                 <td data-bind="text: DateOfEntryFormatted"></td>
                                 <td>
-                                    <a data-bind="click: $root.EditRoom" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit</a>
-                                    <a data-bind="click: $root.DeleteRoom" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                    <a data-bind="click: $root.EditRoom" class="btn btn-green text-white small-btn" aria-expanded="false"><i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit</a>
+                                    <a data-bind="click: $root.DeleteRoom" class="btn btn-danger text-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <!-- /ko -->
             </div>
         </div>
     </div>
@@ -151,7 +157,7 @@
                         <!-- /ko -->
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                         <button type="button" class="btn btn-danger" style="color: #fff !important;" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
@@ -179,6 +185,7 @@
     <script type="text/javascript">
         loggedInUserGuard();
         $(document).ready(function () {
+            setSideBarMenuActive(pageTypes.accomodation);
             var viewModel = new RoomsViewModel();
             ko.applyBindings(viewModel, document.getElementById('mess-room'));
             viewModel.GetRooms();

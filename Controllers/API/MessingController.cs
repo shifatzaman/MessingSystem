@@ -471,8 +471,32 @@ namespace MessingSystem.Controllers.API
             {
                 if (User != null && User.Identity != null)
                 {
-                    _messingService.AddDailyMessing(model);
-                    return response.CreateSuccessRespone(null, "Daily messing added successfully");
+                    var itemExistsInStore = true;
+
+                    if (model.DailyMessingItems != null && model.DailyMessingItems.Count > 0)
+                    {
+                        var itemTypes = _inventoryService.GetInventoryItemTypes();
+                        foreach (var item in model.DailyMessingItems)
+                        {
+                            var itemInStore = itemTypes.Where(it => it.ItemTypeId == item.ItemType).FirstOrDefault();
+
+                            if (itemInStore.Quantity < item.Quantity)
+                            {
+                                itemExistsInStore = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!itemExistsInStore)
+                    {
+                        response.Message = "Not enough quantity of selected item available in store. For details check store section.";
+                    }
+                    else
+                    {
+                        _messingService.AddDailyMessing(model);
+                        return response.CreateSuccessRespone(null, "Daily messing added successfully");
+                    }
                 }
                 else
                 {

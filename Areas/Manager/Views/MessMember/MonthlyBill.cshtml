@@ -33,6 +33,14 @@
         </div>
     </div>
 
+    <div data-bind="ifnot: BillGenarated">
+        <div class="container">
+            <div class="white-box">
+                <h4 style="text-align: center;" data-bind="visible: !BillGenarated()">Select start date, end date and then click on generate to get bill for that time period.</h4>
+            </div>
+        </div>
+    </div>
+
     <div id="billing-report" data-bind="if: BillGenarated">
         <div class="container">
             <div class="white-box">
@@ -152,6 +160,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            setSideBarMenuActive(pageTypes.monthlybill);
             var viewModel = new MessBillViewModel();
             ko.applyBindings(viewModel, document.getElementById('mess-bill'));
             var memberId = getParamValueFromUrl('memberid');

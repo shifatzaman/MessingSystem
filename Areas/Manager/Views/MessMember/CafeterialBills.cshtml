@@ -49,8 +49,8 @@
                                 <td data-bind="text: date"></td>
                                 <td data-bind="text: price"></td>
                                 <td>
-                                    <a data-bind="click: $root.EditCafeBilling" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit</a>
-                                    <a data-bind="click: $root.DeleteCafeBill" class="btn btn-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                    <a data-bind="click: $root.EditCafeBilling" class="btn btn-green text-white small-btn" aria-expanded="false"><i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit</a>
+                                    <a data-bind="click: $root.DeleteCafeBill" class="btn btn-danger text-white small-btn" aria-expanded="false"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -88,7 +88,7 @@
                         <!-- /ko -->
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="submit" class="btn btn-success text-white">Save</button>
                         <button type="button" class="btn btn-danger" style="color: #fff !important;" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
@@ -114,6 +114,7 @@
     <script type="text/javascript">
         loggedInUserGuard();
         $(document).ready(function () {
+            setSideBarMenuActive(pageTypes.cafebill);
             var viewModel = new CafeBillViewModel();
             ko.applyBindings(viewModel, document.getElementById('cafe-bill'));
             var memberId = getParamValueFromUrl('memberid');
