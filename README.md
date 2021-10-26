@@ -76,5 +76,6 @@ Before running, take a pull from master, do a clean build and run migration
 27. Dashboard - Notices can be added by admins from settings -> notice (check Visible in dashboard to display the notice in dashboard). 
 28. Dashboard - Committee members will display mess members with admin user role. (see mess member section)
 29. Dashboard - fixed design issues
+30. Dashboard - Added 3 banners which will keep changing in interval. Placeholder images are set. Replace the images in wwwroot/img/banners to display custom/preferred images. Please note that, name of the image files shouldn't be change (banner-1.jpg, banner-2.jpg ... ) and image should be 1024 * 300. 
 
 
