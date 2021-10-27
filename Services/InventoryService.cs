@@ -142,7 +142,7 @@ namespace MessingSystem.Services
 
         public IList<FetchInventoryItemViewModel> GetInventoryItems()
         {
-            var itemVms = (from item in dbContext.InventoryItems
+            var itemVms = (from item in dbContext.InventoryItems.OrderByDescending(it => it.InventoryItemId)
                            join type in dbContext.InventoryItemTypes
                            on item.ItemType equals type.ItemTypeId
                            select new FetchInventoryItemViewModel
