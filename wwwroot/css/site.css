@@ -780,11 +780,12 @@ body {
 }
 
 .messing-brand {
-    margin-left: 25px;
+    margin-left: 50px;
     color: #fff;
 }
-.messing-brand img{
-    float: left !important;
+
+.messing-brand h4{
+    margin: 10px;
 }
 
 .float-my-children > * {
@@ -807,3 +808,17 @@ body {
     .clearfix:after {
         clear: both;
     }
+
+@media (max-width: 768px) {
+    .messing-brand {
+        margin: 0;
+    }
+
+    .messing-brand img{
+        display: none;
+    }
+
+    .messing-brand h4{
+        font-size: 1rem;
+    }
+}
